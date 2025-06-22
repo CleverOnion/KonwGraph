@@ -1,0 +1,47 @@
+package com.cleveronion.knowgraph.content.mapper;
+
+import com.cleveronion.knowgraph.content.domain.entity.Post;
+import org.apache.ibatis.annotations.Mapper;
+import com.cleveronion.knowgraph.content.domain.dto.PostQueryDTO;
+import org.apache.ibatis.annotations.Param;
+import java.util.List;
+
+@Mapper
+public interface PostMapper {
+    
+    /**
+     * 插入新文章
+     * @param post 文章实体
+     * @return 影响行数
+     */
+    int insert(Post post);
+    
+    /**
+     * 根据ID查询文章
+     * @param id 文章ID
+     * @return 文章实体
+     */
+    Post selectById(Long id);
+
+    /**
+     * 根据条件动态查询文章列表
+     * @param queryDTO 查询条件
+     * @return 文章实体列表
+     */
+    List<Post> selectList(@Param("query") PostQueryDTO queryDTO);
+
+    /**
+     * 更新文章
+     * @param post 文章实体
+     * @return 影响行数
+     */
+    int update(Post post);
+
+    /**
+     * 软删除文章
+     * @param id 文章ID
+     * @param userId 作者ID (用于权限校验)
+     * @return 影响行数
+     */
+    int softDelete(@Param("id") Long id, @Param("userId") Long userId);
+} 

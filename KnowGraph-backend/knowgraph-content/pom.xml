@@ -11,9 +11,22 @@
     <packaging>jar</packaging>
 
     <name>knowgraph-content</name>
-    <description>内容管理模块</description>
+    <description>内容中心模块</description>
 
     <dependencies>
+        <!-- Markdown to HTML -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>0.22.0</version>
+        </dependency>
+
+        <!-- User -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Framework -->
         <dependency>
             <groupId>com.cleveronion</groupId>

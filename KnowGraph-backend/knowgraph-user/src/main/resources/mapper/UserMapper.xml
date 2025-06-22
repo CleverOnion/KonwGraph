@@ -68,4 +68,13 @@
         )
     </insert>
 
+    <select id="selectByIds" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        where id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and deleted_at is null
+    </select>
+
 </mapper> 

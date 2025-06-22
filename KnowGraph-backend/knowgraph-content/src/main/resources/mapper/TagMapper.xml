@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cleveronion.knowgraph.content.mapper.TagMapper">
+
+    <select id="selectByName" resultType="com.cleveronion.knowgraph.content.domain.entity.Tag">
+        select id, name, slug, post_count from tags where name = #{name}
+    </select>
+    
+    <select id="selectByNames" resultType="com.cleveronion.knowgraph.content.domain.entity.Tag">
+        select id, name, slug, post_count from tags where name IN
+        <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into tags (name, slug) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name}, #{item.slug})
+        </foreach>
+    </insert>
+
+    <select id="selectTagsByPostId" resultType="com.cleveronion.knowgraph.content.domain.entity.Tag">
+        select t.id, t.name, t.slug
+        from tags t
+        inner join post_tags pt on t.id = pt.tag_id
+        where pt.post_id = #{postId}
+    </select>
+
+    <select id="selectAll" resultType="com.cleveronion.knowgraph.content.domain.entity.Tag">
+        select id, name, slug, post_count from tags order by post_count desc
+    </select>
+
+</mapper> 

@@ -2,6 +2,9 @@ package com.cleveronion.knowgraph.user.mapper;
 
 import com.cleveronion.knowgraph.user.domain.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -33,4 +36,11 @@ public interface UserMapper {
      * @return 用户实体
      */
     User selectById(Long id);
+
+    /**
+     * 根据ID批量查询用户
+     * @param ids 用户ID列表
+     * @return 用户实体列表
+     */
+    List<User> selectByIds(@Param("ids") List<Long> ids);
 } 
