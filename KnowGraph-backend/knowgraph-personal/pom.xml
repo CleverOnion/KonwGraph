@@ -7,11 +7,11 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>knowgraph-user</artifactId>
+    <artifactId>knowgraph-personal</artifactId>
     <packaging>jar</packaging>
 
-    <name>knowgraph-user</name>
-    <description>用户中心模块</description>
+    <name>knowgraph-personal</name>
+    <description>个人空间模块</description>
 
     <dependencies>
         <!-- Framework -->
@@ -24,6 +24,23 @@
         <dependency>
             <groupId>com.cleveronion</groupId>
             <artifactId>knowgraph-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Business Dependencies -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-content</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-social</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -40,4 +57,4 @@
         </dependency>
     </dependencies>
 
-</project>
+</project> 

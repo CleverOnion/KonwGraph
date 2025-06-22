@@ -1,49 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.cleveronion</groupId>
-        <artifactId>knowgraph-parent</artifactId>
+        <artifactId>KnowGraph-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
-    
+
     <artifactId>knowgraph-analytics</artifactId>
-    <name>KnowGraph Analytics</name>
-    <description>KnowGraph知识分享平台 - 统计分析模块</description>
     <packaging>jar</packaging>
-    
+
+    <name>knowgraph-analytics</name>
+    <description>统计分析模块</description>
+
     <dependencies>
-        <!-- 框架模块 -->
+        <!-- Framework -->
         <dependency>
             <groupId>com.cleveronion</groupId>
             <artifactId>knowgraph-framework</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        
-        <!-- 内容模块 -->
+        <!-- Common -->
         <dependency>
             <groupId>com.cleveronion</groupId>
-            <artifactId>knowgraph-content</artifactId>
+            <artifactId>knowgraph-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        
-        <!-- 用户模块 -->
+
+        <!-- Database -->
         <dependency>
-            <groupId>com.cleveronion</groupId>
-            <artifactId>knowgraph-user</artifactId>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>3.0.3</version>
         </dependency>
-        
-        <!-- 社交模块 -->
         <dependency>
-            <groupId>com.cleveronion</groupId>
-            <artifactId>knowgraph-social</artifactId>
-        </dependency>
-        
-        <!-- 测试依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
+
 </project> 

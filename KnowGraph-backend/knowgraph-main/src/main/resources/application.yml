@@ -1,0 +1,51 @@
+# ===================================================================
+# Spring Boot 应用程序配置
+# ===================================================================
+
+# 服务器配置
+server:
+  port: 8080 # 应用端口号
+
+# Spring 核心配置
+spring:
+  application:
+    name: knowgraph-backend # 应用名称
+  profiles:
+    active: dev # 默认激活开发环境配置
+
+---
+# ===================================================================
+# 开发环境配置 (Development Profile)
+# ===================================================================
+spring:
+  config:
+    activate:
+      on-profile: dev # 当 spring.profiles.active=dev 时激活
+
+  # 数据源配置 (MySQL)
+  datasource:
+    url: jdbc:mysql://localhost:3306/knowgraph_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: Shicong666 # 请替换为您的MySQL密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Redis 配置
+  data:
+    redis:
+      host: localhost
+      password:
+      database: 0
+      port: 6379
+
+# MyBatis 配置
+mybatis:
+  # 指定Mapper XML文件的位置
+  mapper-locations: classpath*:mapper/**/*.xml
+  # 为实体类指定别名，方便在XML中引用
+  type-aliases-package: com.cleveronion.knowgraph.**.entity
+
+# 日志配置
+logging:
+  level:
+    com.cleveronion: debug # 设置项目包的日志级别为 debug
+    org.springframework: info

@@ -1,44 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.cleveronion</groupId>
-        <artifactId>knowgraph-parent</artifactId>
+        <artifactId>KnowGraph-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
-    
+
     <artifactId>knowgraph-content</artifactId>
-    <name>KnowGraph Content</name>
-    <description>KnowGraph知识分享平台 - 内容模块</description>
     <packaging>jar</packaging>
-    
+
+    <name>knowgraph-content</name>
+    <description>内容管理模块</description>
+
     <dependencies>
-        <!-- 框架模块 -->
+        <!-- Framework -->
         <dependency>
             <groupId>com.cleveronion</groupId>
             <artifactId>knowgraph-framework</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        
-        <!-- 用户模块 -->
+        <!-- Common -->
         <dependency>
             <groupId>com.cleveronion</groupId>
-            <artifactId>knowgraph-user</artifactId>
+            <artifactId>knowgraph-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        
-        <!-- Markdown处理 -->
+
+        <!-- Database -->
         <dependency>
-            <groupId>com.vladsch.flexmark</groupId>
-            <artifactId>flexmark-all</artifactId>
-            <version>0.64.8</version>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>3.0.3</version>
         </dependency>
-        
-        <!-- 测试依赖 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
+
 </project> 
