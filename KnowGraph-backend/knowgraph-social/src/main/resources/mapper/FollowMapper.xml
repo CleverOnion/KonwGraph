@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cleveronion.knowgraph.social.mapper.FollowMapper">
+
+    <insert id="insert" parameterType="com.cleveronion.knowgraph.social.domain.entity.Follow">
+        INSERT INTO follow (follower_id, following_id, created_at)
+        VALUES (#{followerId}, #{followingId}, #{createdAt})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM follow
+        WHERE follower_id = #{followerId} AND following_id = #{followingId}
+    </delete>
+
+    <select id="selectOne" resultType="com.cleveronion.knowgraph.social.domain.entity.Follow">
+        SELECT follower_id, following_id, created_at
+        FROM follow
+        WHERE follower_id = #{followerId} AND following_id = #{followingId}
+    </select>
+
+    <select id="selectFollowingListByUserId" resultType="com.cleveronion.knowgraph.social.domain.entity.Follow">
+        SELECT follower_id, following_id, created_at
+        FROM follow
+        WHERE follower_id = #{userId}
+    </select>
+
+    <select id="selectFollowerListByUserId" resultType="com.cleveronion.knowgraph.social.domain.entity.Follow">
+        SELECT follower_id, following_id, created_at
+        FROM follow
+        WHERE following_id = #{userId}
+    </select>
+
+</mapper> 

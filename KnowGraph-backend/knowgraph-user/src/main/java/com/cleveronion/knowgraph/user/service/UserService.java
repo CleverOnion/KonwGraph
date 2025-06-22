@@ -2,8 +2,11 @@ package com.cleveronion.knowgraph.user.service;
 
 import com.cleveronion.knowgraph.user.domain.dto.UserLoginDTO;
 import com.cleveronion.knowgraph.user.domain.dto.UserRegisterDTO;
+import com.cleveronion.knowgraph.user.domain.entity.User;
 import com.cleveronion.knowgraph.user.domain.vo.LoginSuccessVO;
 import com.cleveronion.knowgraph.user.domain.vo.UserProfileVO;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -26,4 +29,11 @@ public interface UserService {
      * @return 用户个人资料
      */
     UserProfileVO getUserProfile(Long userId);
+
+    /**
+     * 根据用户ID列表批量获取用户
+     * @param userIds 用户ID列表
+     * @return 用户列表
+     */
+    List<User> listByIds(List<Long> userIds);
 } 

@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -85,5 +86,13 @@ public class UserServiceImpl implements UserService {
         UserProfileVO vo = new UserProfileVO();
         BeanUtils.copyProperties(user, vo);
         return vo;
+    }
+
+    @Override
+    public List<User> listByIds(List<Long> userIds) {
+        if (userIds == null || userIds.isEmpty()) {
+            return new java.util.ArrayList<>();
+        }
+        return userMapper.selectByIds(userIds);
     }
 } 

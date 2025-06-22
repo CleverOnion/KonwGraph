@@ -1,4 +1,4 @@
-package com.cleveronion.knowgraph.personal.domain.entity;
+package com.cleveronion.knowgraph.social.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,5 +1,4 @@
-package com.cleveronion.knowgraph.user.domain.entity;
-
+package com.cleveronion.knowgraph.social.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,28 +9,28 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 用户关注关系实体类
+ * 收藏夹与文章的关联实体类
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Follow implements Serializable {
+public class CollectionItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 关注者ID
+     * 收藏夹ID
      */
-    private Long followerId;
+    private Long collectionId;
 
     /**
-     * 被关注者ID
+     * 收藏的文章ID
      */
-    private Long followingId;
+    private Long postId;
 
     /**
-     * 关注时间
+     * 收藏时间
      */
     private LocalDateTime createdAt;
 } 
