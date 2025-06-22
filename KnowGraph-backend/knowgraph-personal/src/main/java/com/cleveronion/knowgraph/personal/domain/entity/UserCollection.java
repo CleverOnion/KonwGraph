@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Collection implements Serializable {
+public class UserCollection implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
