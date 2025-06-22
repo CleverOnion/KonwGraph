@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.cleveronion</groupId>
+        <artifactId>knowgraph-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>knowgraph-admin</artifactId>
+    <name>KnowGraph Admin</name>
+    <description>KnowGraph知识分享平台 - 管理后台模块</description>
+    <packaging>jar</packaging>
+    
+    <dependencies>
+        <!-- 框架模块 -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-framework</artifactId>
+        </dependency>
+        
+        <!-- 系统模块 -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-system</artifactId>
+        </dependency>
+        
+        <!-- 用户模块 -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-user</artifactId>
+        </dependency>
+        
+        <!-- 内容模块 -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-content</artifactId>
+        </dependency>
+        
+        <!-- 社交模块 -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-social</artifactId>
+        </dependency>
+        
+        <!-- 搜索模块 -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-search</artifactId>
+        </dependency>
+        
+        <!-- 统计分析模块 -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-analytics</artifactId>
+        </dependency>
+        
+        <!-- API文档 -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+        </dependency>
+        
+        <!-- 测试依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.cleveronion.knowgraph.admin.KnowGraphAdminApplication</mainClass>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project> 
