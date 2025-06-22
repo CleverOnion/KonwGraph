@@ -14,6 +14,18 @@
     <description>互动社交模块</description>
 
     <dependencies>
+        <!-- User -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- Content -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-content</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Framework -->
         <dependency>
             <groupId>com.cleveronion</groupId>

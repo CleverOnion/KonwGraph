@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cleveronion.knowgraph.social.mapper.LikeMapper">
+
+    <select id="selectOne" resultType="com.cleveronion.knowgraph.social.domain.entity.Like">
+        select id, user_id, likable_id, likable_type, created_at
+        from likes
+        where user_id = #{userId} and likable_id = #{likableId} and likable_type = #{likableType}
+    </select>
+
+    <insert id="insert" parameterType="com.cleveronion.knowgraph.social.domain.entity.Like" useGeneratedKeys="true" keyProperty="id">
+        insert into likes(user_id, likable_id, likable_type, created_at)
+        values(#{userId}, #{likableId}, #{likableType}, now())
+    </insert>
+
+    <delete id="deleteById">
+        delete from likes where id = #{id}
+    </delete>
+
+</mapper> 

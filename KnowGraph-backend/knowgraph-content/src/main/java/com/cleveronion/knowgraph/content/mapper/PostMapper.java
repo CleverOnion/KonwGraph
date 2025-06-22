@@ -44,4 +44,25 @@ public interface PostMapper {
      * @return 影响行数
      */
     int softDelete(@Param("id") Long id, @Param("userId") Long userId);
+
+    /**
+     * 增加文章的点赞数
+     * @param postId 文章ID
+     * @return 影响行数
+     */
+    int incrementLikeCount(Long postId);
+
+    /**
+     * 减少文章的点赞数
+     * @param postId 文章ID
+     * @return 影响行数
+     */
+    int decrementLikeCount(Long postId);
+
+    /**
+     * 增加文章的评论数
+     * @param postId 文章ID
+     * @return 影响行数
+     */
+    int incrementCommentCount(Long postId);
 } 
