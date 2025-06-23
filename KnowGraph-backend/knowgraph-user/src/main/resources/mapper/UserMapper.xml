@@ -77,4 +77,14 @@
         and deleted_at is null
     </select>
 
+    <select id="selectListByPage" resultMap="UserResult">
+        SELECT * FROM users
+        ORDER BY created_at DESC
+        LIMIT #{pageSize} OFFSET ${(pageNum - 1) * pageSize}
+    </select>
+
+    <select id="countTotal" resultType="java.lang.Long">
+        SELECT count(*) FROM users
+    </select>
+
 </mapper> 

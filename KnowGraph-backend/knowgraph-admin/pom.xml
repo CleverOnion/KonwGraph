@@ -27,6 +27,20 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- Business Logic Dependencies -->
+        <dependency>
+            <groupId>com.cleveronion</groupId>
+            <artifactId>knowgraph-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Lombok for boilerplate code -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Database -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

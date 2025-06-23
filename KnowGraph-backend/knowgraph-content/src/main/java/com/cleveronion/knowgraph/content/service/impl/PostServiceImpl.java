@@ -191,7 +191,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostSimpleVO> getPostList(PostQueryDTO queryDTO) {
+    public List<PostSimpleVO> listSimplePosts(PostQueryDTO queryDTO) {
         // 1. 查询文章基础信息列表
         List<Post> posts = postMapper.selectList(queryDTO);
         if (CollectionUtils.isEmpty(posts)) {

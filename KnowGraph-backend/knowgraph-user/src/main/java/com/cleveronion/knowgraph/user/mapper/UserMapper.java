@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import com.cleveronion.knowgraph.common.core.domain.PageQueryDTO;
 
 @Mapper
 public interface UserMapper {
@@ -43,4 +44,8 @@ public interface UserMapper {
      * @return 用户实体列表
      */
     List<User> selectByIds(@Param("ids") List<Long> ids);
+
+    List<User> selectListByPage(PageQueryDTO pageQuery);
+
+    Long countTotal();
 } 

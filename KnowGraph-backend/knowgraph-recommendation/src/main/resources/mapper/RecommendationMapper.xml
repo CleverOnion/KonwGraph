@@ -8,15 +8,13 @@
         <id property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="summary" column="summary"/>
-        <result property="coverImage" column="cover_image"/>
-        <result property="likesCount" column="likes_count"/>
-        <result property="commentsCount" column="comments_count"/>
-        <result property="createTime" column="create_time"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
         <!-- 关联查询用户信息 -->
         <association property="author" javaType="com.cleveronion.knowgraph.user.domain.vo.UserProfileVO">
             <id property="id" column="author_id"/>
             <result property="nickname" column="author_nickname"/>
-            <result property="avatar" column="author_avatar"/>
+            <result property="avatarUrl" column="author_avatar"/>
         </association>
     </resultMap>
 
@@ -25,17 +23,15 @@
             p.id,
             p.title,
             p.summary,
-            p.cover_image,
-            p.likes_count,
-            p.comments_count,
-            p.create_time,
+            p.like_count,
+            p.comment_count,
             u.id as author_id,
             u.nickname as author_nickname,
-            u.avatar as author_avatar
+            u.avatar_url as author_avatar
         FROM
-            post p
+            posts p
         JOIN
-            user u ON p.user_id = u.id
+            users u ON p.user_id = u.id
         WHERE
             p.status = 'PUBLISHED'
         ORDER BY

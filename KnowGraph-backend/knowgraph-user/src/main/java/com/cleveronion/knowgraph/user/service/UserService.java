@@ -5,6 +5,8 @@ import com.cleveronion.knowgraph.user.domain.dto.UserRegisterDTO;
 import com.cleveronion.knowgraph.user.domain.entity.User;
 import com.cleveronion.knowgraph.user.domain.vo.LoginSuccessVO;
 import com.cleveronion.knowgraph.user.domain.vo.UserProfileVO;
+import com.cleveronion.knowgraph.common.core.domain.PageQueryDTO;
+import com.cleveronion.knowgraph.common.core.domain.PageResultVO;
 
 import java.util.List;
 
@@ -12,28 +14,36 @@ public interface UserService {
 
     /**
      * 用户注册
-     * @param registerDTO 注册信息
+     * @param registerDTO 用户注册信息
      */
     void register(UserRegisterDTO registerDTO);
 
     /**
      * 用户登录
-     * @param loginDTO 登录信息
-     * @return 登录成功信息，包含token
+     * @param userLoginDTO 用户登录信息
+     * @return 登录成功后的用户信息
      */
-    LoginSuccessVO login(UserLoginDTO loginDTO);
+    LoginSuccessVO login(UserLoginDTO userLoginDTO);
 
     /**
-     * 根据用户ID获取个人资料
-     * @param userId 用户ID
-     * @return 用户个人资料
+     * 获取用户个人信息
+     *
+     * @param userId 用户id
+     * @return 用户个人信息
      */
-    UserProfileVO getUserProfile(Long userId);
+    UserProfileVO getUserProfileById(Long userId);
 
     /**
-     * 根据用户ID列表批量获取用户
+     * 根据ID列表批量获取用户
      * @param userIds 用户ID列表
      * @return 用户列表
      */
     List<User> listByIds(List<Long> userIds);
-} 
+
+    /**
+     * 分页获取用户列表
+     * @param pageQuery 分页查询参数
+     * @return 用户分页结果
+     */
+    PageResultVO<User> listUsersByPage(PageQueryDTO pageQuery);
+}

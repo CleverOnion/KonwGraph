@@ -54,4 +54,18 @@ public interface FollowMapper {
      */
     List<Follow> selectFollowerListByUserId(@Param("userId") Long userId);
 
+    /**
+     * 计算用户的关注数
+     * @param userId 用户ID
+     * @return 关注数
+     */
+    Long countFollowing(@Param("userId") Long userId);
+
+    /**
+     * 计算用户的粉丝数
+     * @param userId 用户ID
+     * @return 粉丝数
+     */
+    Long countFollowers(@Param("userId") Long userId);
+
 } 

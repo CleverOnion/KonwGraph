@@ -107,4 +107,14 @@ public class FollowServiceImpl implements FollowService {
             return userProfileVO;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public Long getFollowingCount(Long userId) {
+        return followMapper.countFollowing(userId);
+    }
+
+    @Override
+    public Long getFollowerCount(Long userId) {
+        return followMapper.countFollowers(userId);
+    }
 } 

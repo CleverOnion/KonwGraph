@@ -42,7 +42,7 @@ public class PostController {
      */
     @GetMapping
     public R<List<PostSimpleVO>> getPostList(PostQueryDTO queryDTO) {
-        return R.ok(postService.getPostList(queryDTO));
+        return R.ok(postService.listSimplePosts(queryDTO));
     }
 
     /**

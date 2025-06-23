@@ -30,7 +30,7 @@ public interface PostService {
      * @param queryDTO 查询条件
      * @return 文章简要信息列表
      */
-    List<PostSimpleVO> getPostList(PostQueryDTO queryDTO);
+    List<PostSimpleVO> listSimplePosts(PostQueryDTO queryDTO);
 
     /**
      * 更新文章

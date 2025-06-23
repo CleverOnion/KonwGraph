@@ -50,4 +50,18 @@ public interface FollowService {
      * @return 粉丝用户列表
      */
     List<UserProfileVO> getFollowerList(Long userId);
+
+    /**
+     * 获取用户关注数
+     * @param userId 用户ID
+     * @return 关注数
+     */
+    Long getFollowingCount(Long userId);
+
+    /**
+     * 获取用户粉丝数
+     * @param userId 用户ID
+     * @return 粉丝数
+     */
+    Long getFollowerCount(Long userId);
 } 

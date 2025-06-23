@@ -3,6 +3,8 @@ package com.cleveronion.knowgraph.user.service.impl;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import com.cleveronion.knowgraph.common.exception.ServiceException;
+import com.cleveronion.knowgraph.common.core.domain.PageQueryDTO;
+import com.cleveronion.knowgraph.common.core.domain.PageResultVO;
 import com.cleveronion.knowgraph.user.domain.dto.UserLoginDTO;
 import com.cleveronion.knowgraph.user.domain.dto.UserRegisterDTO;
 import com.cleveronion.knowgraph.user.domain.entity.User;
@@ -78,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileVO getUserProfile(Long userId) {
+    public UserProfileVO getUserProfileById(Long userId) {
         User user = userMapper.selectById(userId);
         if (user == null) {
             throw new ServiceException("用户不存在");
@@ -94,5 +96,17 @@ public class UserServiceImpl implements UserService {
             return new java.util.ArrayList<>();
         }
         return userMapper.selectByIds(userIds);
+    }
+
+    @Override
+    public PageResultVO<User> listUsersByPage(PageQueryDTO pageQuery) {
+        // 1. 获取总数
+        Long total = userMapper.countTotal();
+        if (total == 0) {
+            return new PageResultVO<>(0L, new java.util.ArrayList<>());
+        }
+        // 2. 获取当前页数据
+        List<User> records = userMapper.selectListByPage(pageQuery);
+        return new PageResultVO<>(total, records);
     }
 } 

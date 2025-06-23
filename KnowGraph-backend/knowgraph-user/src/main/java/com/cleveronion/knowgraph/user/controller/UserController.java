@@ -22,6 +22,6 @@ public class UserController {
     @GetMapping("/me")
     public R<UserProfileVO> getMyProfile() {
         Long loginId = StpUtil.getLoginIdAsLong();
-        return R.ok(userService.getUserProfile(loginId));
+        return R.ok(userService.getUserProfileById(loginId));
     }
 } 

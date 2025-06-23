@@ -25,9 +25,15 @@
     </select>
 
     <select id="selectFollowerListByUserId" resultType="com.cleveronion.knowgraph.social.domain.entity.Follow">
-        SELECT follower_id, following_id, created_at
-        FROM follow
-        WHERE following_id = #{userId}
+        SELECT * FROM follow WHERE following_id = #{userId}
+    </select>
+
+    <select id="countFollowing" resultType="java.lang.Long">
+        SELECT count(*) FROM follow WHERE follower_id = #{userId}
+    </select>
+
+    <select id="countFollowers" resultType="java.lang.Long">
+        SELECT count(*) FROM follow WHERE following_id = #{userId}
     </select>
 
 </mapper> 
