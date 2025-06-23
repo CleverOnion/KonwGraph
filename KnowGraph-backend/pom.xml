@@ -40,7 +40,7 @@
 		<module>knowgraph-user</module>
 		<module>knowgraph-content</module>
 		<module>knowgraph-social</module>
-		<module>knowgraph-search</module>
+		<module>knowgraph-recommendation</module>
 		<module>knowgraph-admin</module>
 		<module>knowgraph-analytics</module>
 		<module>knowgraph-personal</module>

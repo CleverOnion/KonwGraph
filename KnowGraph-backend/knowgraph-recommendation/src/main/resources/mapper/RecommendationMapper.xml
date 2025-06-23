@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cleveronion.knowgraph.recommendation.mapper.RecommendationMapper">
+
+    <resultMap id="PostSimpleVOResultMap" type="com.cleveronion.knowgraph.content.domain.vo.PostSimpleVO">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="coverImage" column="cover_image"/>
+        <result property="likesCount" column="likes_count"/>
+        <result property="commentsCount" column="comments_count"/>
+        <result property="createTime" column="create_time"/>
+        <!-- 关联查询用户信息 -->
+        <association property="author" javaType="com.cleveronion.knowgraph.user.domain.vo.UserProfileVO">
+            <id property="id" column="author_id"/>
+            <result property="nickname" column="author_nickname"/>
+            <result property="avatar" column="author_avatar"/>
+        </association>
+    </resultMap>
+
+    <select id="selectRecommendedPosts" resultMap="PostSimpleVOResultMap">
+        SELECT
+            p.id,
+            p.title,
+            p.summary,
+            p.cover_image,
+            p.likes_count,
+            p.comments_count,
+            p.create_time,
+            u.id as author_id,
+            u.nickname as author_nickname,
+            u.avatar as author_avatar
+        FROM
+            post p
+        JOIN
+            user u ON p.user_id = u.id
+        WHERE
+            p.status = 'PUBLISHED'
+        ORDER BY
+            (
+                (p.likes_count * 3) + (p.comments_count * 5) + (p.views_count * 1)
+            ) / POW(TIMESTAMPDIFF(HOUR, p.create_time, NOW()) + 2, 1.8) DESC
+    </select>
+
+</mapper> 
