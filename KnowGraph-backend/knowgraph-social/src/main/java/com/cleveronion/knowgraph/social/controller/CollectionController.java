@@ -1,0 +1,82 @@
+package com.cleveronion.knowgraph.social.controller;
+
+import cn.dev33.satoken.stp.StpUtil;
+import com.cleveronion.knowgraph.common.core.domain.R;
+import com.cleveronion.knowgraph.content.domain.vo.PostSimpleVO;
+import com.cleveronion.knowgraph.social.domain.dto.CollectionCreateDTO;
+import com.cleveronion.knowgraph.social.domain.dto.CollectionUpdateDTO;
+import com.cleveronion.knowgraph.social.domain.entity.UserCollection;
+import com.cleveronion.knowgraph.social.service.CollectionService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping
+@RequiredArgsConstructor
+public class CollectionController {
+
+    private final CollectionService collectionService;
+
+    // --- 收藏夹管理 ---
+
+    @PostMapping("/collections")
+    public R<UserCollection> createCollection(@Validated @RequestBody CollectionCreateDTO createDTO) {
+        UserCollection collection = collectionService.createCollection(
+                createDTO.getName(),
+                createDTO.getDescription(),
+                createDTO.getIsPrivate()
+        );
+        return R.ok(collection);
+    }
+
+    @PutMapping("/collections/{collectionId}")
+    public R<Void> updateCollection(@PathVariable Long collectionId, @Validated @RequestBody CollectionUpdateDTO updateDTO) {
+        collectionService.updateCollection(
+                collectionId,
+                updateDTO.getName(),
+                updateDTO.getDescription(),
+                updateDTO.getIsPrivate()
+        );
+        return R.ok();
+    }
+
+    @DeleteMapping("/collections/{collectionId}")
+    public R<Void> deleteCollection(@PathVariable Long collectionId) {
+        collectionService.deleteCollection(collectionId);
+        return R.ok();
+    }
+
+    @GetMapping("/users/{userId}/collections")
+    public R<List<UserCollection>> getUserCollections(@PathVariable Long userId) {
+        return R.ok(collectionService.getCollectionsByUserId(userId));
+    }
+
+    // --- 收藏夹内容管理 ---
+
+    @GetMapping("/collections/{collectionId}/posts")
+    public R<List<PostSimpleVO>> getPostsInCollection(@PathVariable Long collectionId) {
+        return R.ok(collectionService.getPostsInCollection(collectionId));
+    }
+
+    @PostMapping("/collections/{collectionId}/posts/{postId}")
+    public R<Void> addPostToCollection(@PathVariable Long collectionId, @PathVariable Long postId) {
+        collectionService.addPostToCollection(collectionId, postId);
+        return R.ok();
+    }
+
+    @DeleteMapping("/collections/{collectionId}/posts/{postId}")
+    public R<Void> removePostFromCollection(@PathVariable Long collectionId, @PathVariable Long postId) {
+        collectionService.removePostFromCollection(collectionId, postId);
+        return R.ok();
+    }
+
+    // --- 便捷接口 ---
+    @GetMapping("/posts/{postId}/is-collected")
+    public R<Boolean> isPostCollected(@PathVariable Long postId) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        return R.ok(collectionService.isPostCollected(userId, postId));
+    }
+} 

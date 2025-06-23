@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cleveronion.knowgraph.social.mapper.UserCollectionMapper">
+
+    <insert id="insert" parameterType="com.cleveronion.knowgraph.social.domain.entity.UserCollection" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_collection (user_id, name, description, is_private, created_at, updated_at)
+        VALUES (#{userId}, #{name}, #{description}, #{isPrivate}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <update id="update" parameterType="com.cleveronion.knowgraph.social.domain.entity.UserCollection">
+        UPDATE user_collection
+        SET name = #{name},
+            description = #{description},
+            is_private = #{isPrivate},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM user_collection WHERE id = #{id}
+    </delete>
+
+    <select id="selectById" resultType="com.cleveronion.knowgraph.social.domain.entity.UserCollection">
+        SELECT id, user_id, name, description, is_private, created_at, updated_at
+        FROM user_collection
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByUserId" resultType="com.cleveronion.knowgraph.social.domain.entity.UserCollection">
+        SELECT id, user_id, name, description, is_private, created_at, updated_at
+        FROM user_collection
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+</mapper> 

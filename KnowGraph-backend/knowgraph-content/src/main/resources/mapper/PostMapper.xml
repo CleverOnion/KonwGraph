@@ -101,4 +101,13 @@
         update posts set comment_count = comment_count + 1 where id = #{postId}
     </update>
 
+    <select id="selectByIds" resultType="com.cleveronion.knowgraph.content.domain.entity.Post">
+        SELECT *
+        FROM post
+        WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper> 

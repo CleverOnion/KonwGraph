@@ -250,7 +250,7 @@ public class PostServiceImpl implements PostService {
         // 4. 更新文章基本信息
         postMapper.update(postToUpdate);
 
-        // 5. 更新标签（先删后加）
+        // 5. 更新标签
         if (updateDTO.getTags() != null) {
             postTagMapper.deleteByPostId(postId);
             handlePostTags(updateDTO.getTags(), postId);
@@ -264,5 +264,34 @@ public class PostServiceImpl implements PostService {
             // 如果影响行数为0，说明文章不存在或用户无权删除
             throw new ServiceException("删除失败，文章不存在或无权限");
         }
+    }
+
+    @Override
+    public List<PostSimpleVO> listSimplePostsByIds(List<Long> postIds) {
+        if (CollectionUtils.isEmpty(postIds)) {
+            return Collections.emptyList();
+        }
+
+        List<Post> posts = postMapper.selectByIds(postIds);
+        if (CollectionUtils.isEmpty(posts)) {
+            return Collections.emptyList();
+        }
+
+        List<Long> userIds = posts.stream().map(Post::getUserId).distinct().collect(Collectors.toList());
+        Map<Long, User> userMap = userMapper.selectByIds(userIds).stream()
+                .collect(Collectors.toMap(User::getId, user -> user));
+
+        return posts.stream().map(post -> {
+            PostSimpleVO vo = new PostSimpleVO();
+            vo.setId(post.getId());
+            vo.setTitle(post.getTitle());
+            vo.setSummary(post.getSummary());
+            vo.setPublishedAt(post.getPublishedAt());
+            vo.setViewCount(post.getViewCount());
+            vo.setLikeCount(post.getLikeCount());
+            vo.setCommentCount(post.getCommentCount());
+            vo.setAuthor(mapToUserProfileVO(userMap.get(post.getUserId())));
+            return vo;
+        }).collect(Collectors.toList());
     }
 } 
