@@ -237,6 +237,7 @@ const UserProfilePage = () => {
   };
 
   const handleTabChange = (key) => {
+    setActiveTab(key);
     switch (key) {
       case 'posts':
         // 文章列表已经在初始化时获取
