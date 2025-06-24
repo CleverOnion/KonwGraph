@@ -398,46 +398,64 @@ const UserProfilePage = () => {
         <Tabs activeKey={activeTab} onChange={handleTabChange}>
           <TabPane tab="发布的文章" key="posts">
             {posts.length > 0 ? (
-              <List
-                itemLayout="vertical"
-                dataSource={posts}
-                renderItem={(post) => (
-                  <List.Item
-                    key={post.id}
-                    actions={[
-                      <Space key="stats">
-                        <span><EyeOutlined /> {post.viewCount}</span>
-                        <span><HeartOutlined /> {post.likeCount}</span>
-                        <span><MessageOutlined /> {post.commentCount}</span>
-                      </Space>
-                    ]}
-                    extra={
-                      post.coverImage && (
-                        <img
-                          width={200}
-                          alt={post.title}
-                          src={post.coverImage}
-                        />
-                      )
-                    }
-                  >
-                    <List.Item.Meta
-                      title={
-                        <a onClick={() => navigate(`/post/${post.id}`)}>
-                          {post.title}
-                        </a>
-                      }
-                      description={
-                        <Space>
-                          <Tag color={post.category?.color}>{post.category?.name}</Tag>
-                          <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
-                        </Space>
-                      }
-                    />
-                    <div>{post.summary}</div>
-                  </List.Item>
-                )}
-              />
+              <div className="posts-container">
+                {posts.map((post) => (
+                  <div className="reddit-post" key={post.id} style={{ marginBottom: '16px', border: '1px solid #e8e8e8', borderRadius: '8px', padding: '16px', backgroundColor: '#fff' }}>
+                    <div className="reddit-post-header" style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', fontSize: '12px', color: '#666' }}>
+                      <span className="reddit-post-time">
+                        发布于 {new Date(post.publishedAt).toLocaleDateString()}
+                      </span>
+                      {post.category && (
+                        <Tag color={post.category.color} style={{ marginLeft: '8px' }}>
+                          {post.category.name}
+                        </Tag>
+                      )}
+                    </div>
+                    <h3
+                      className="reddit-post-title"
+                      onClick={() => navigate(`/post/${post.id}`)}
+                      style={{ 
+                        cursor: 'pointer', 
+                        margin: '0 0 8px 0', 
+                        fontSize: '18px', 
+                        fontWeight: '600',
+                        color: '#1a1a1a',
+                        lineHeight: '1.4'
+                      }}
+                    >
+                      {post.title}
+                    </h3>
+                    {post.summary && (
+                      <div className="reddit-post-summary" style={{ 
+                        color: '#666', 
+                        fontSize: '14px', 
+                        lineHeight: '1.5', 
+                        marginBottom: '12px',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}>
+                        {post.summary}
+                      </div>
+                    )}
+                    <div className="reddit-post-actions" style={{ display: 'flex', gap: '16px', fontSize: '13px', color: '#666' }}>
+                      <span className="reddit-post-action" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <EyeOutlined />
+                        {post.viewCount || 0}
+                      </span>
+                      <span className="reddit-post-action" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <HeartOutlined />
+                        {post.likeCount || 0}
+                      </span>
+                      <span className="reddit-post-action" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <MessageOutlined />
+                        {post.commentCount || 0}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : (
               <Empty description="暂无发布的文章" />
             )}
