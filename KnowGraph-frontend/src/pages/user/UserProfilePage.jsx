@@ -35,6 +35,10 @@ import {
 import { getPersonalProfile, getMyProfile, toggleFollow, isFollowing, getFollowingList, getFollowerList } from '../../api/personal';
 import { getUserCollections, createCollection, deleteCollection, getPostsInCollection } from '../../api/collection';
 import { getPostsByUserId } from '../../api/post';
+import Message from '../../components/Message';
+import './HomePage.css';
+import '../../styles/sidebar.css';
+import logo from '../../assets/logo.png';
 
 const { TabPane } = Tabs;
 const { Title, Text, Paragraph } = Typography;
@@ -208,11 +212,34 @@ const UserProfilePage = () => {
   };
 
   // 标签页切换处理
+  const handleProfileClick = async () => {
+    // 检查用户是否登录
+    const tokenName = localStorage.getItem("tokenName");
+    const tokenValue = localStorage.getItem("tokenValue");
+    if (!tokenName || !tokenValue) {
+      Message.error("请先登录后再访问个人空间");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await getMyProfile();
+      if (response.code === 200) {
+        const userId = response.data.id;
+        navigate(`/users/${userId}`);
+      } else {
+        Message.error("获取用户信息失败");
+      }
+    } catch (error) {
+      console.error("获取用户信息失败:", error);
+      Message.error("获取用户信息失败");
+    }
+  };
+
   const handleTabChange = (key) => {
-    setActiveTab(key);
     switch (key) {
       case 'posts':
-        fetchPosts();
+        // 文章列表已经在初始化时获取
         break;
       case 'collections':
         fetchCollections();
@@ -237,7 +264,76 @@ const UserProfilePage = () => {
   }
 
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px' }}>
+    <div className="reddit-home-bg">
+      {/* 顶部导航栏 */}
+      <header className="reddit-header">
+        <div className="reddit-header-left">
+          <img src={logo} alt="logo" className="reddit-header-logo" />
+          <span className="reddit-header-title">KnowGraph</span>
+        </div>
+        <div className="reddit-header-center">
+          <input
+            className="reddit-header-search"
+            placeholder="Search KnowGraph"
+          />
+        </div>
+        <div className="reddit-header-right">
+          <button className="reddit-header-btn">+</button>
+          <button className="reddit-header-btn">
+            <span role="img" aria-label="msg">
+              💬
+            </span>
+          </button>
+          <button className="reddit-header-avatar">
+            <span role="img" aria-label="user">
+              🧑
+            </span>
+          </button>
+        </div>
+      </header>
+      <div className="reddit-main-layout">
+        {/* 左侧栏 */}
+        <aside className="app-sidebar">
+          <nav>
+            <ul className="app-menu">
+              <li onClick={() => navigate("/")}>
+                <span role="img" aria-label="home">
+                  🏠
+                </span>{" "}
+                首页
+              </li>
+              <li onClick={() => navigate("/hot")}>
+                <span role="img" aria-label="pop">
+                  🔥
+                </span>{" "}
+                热门
+              </li>
+              <li onClick={() => navigate("/explore")}>
+                <span role="img" aria-label="explore">
+                  🧭
+                </span>{" "}
+                探索
+              </li>
+              <li className="active" onClick={handleProfileClick}>
+                <span role="img" aria-label="profile">
+                  👤
+                </span>{" "}
+                个人空间
+              </li>
+            </ul>
+            <div className="app-menu-group">发布文章</div>
+             <ul className="app-menu">
+               <li onClick={() => navigate("/editor")}>
+                 <span role="img" aria-label="write">
+                   ✍️
+                 </span>{" "}
+                 发布文章
+               </li>
+             </ul>
+          </nav>
+        </aside>
+        {/* 主内容区域 */}
+        <main className="reddit-content">
       {/* 用户信息卡片 */}
       <Card style={{ marginBottom: 20 }}>
         <Row gutter={24}>
@@ -326,7 +422,7 @@ const UserProfilePage = () => {
                   >
                     <List.Item.Meta
                       title={
-                        <a onClick={() => navigate(`/posts/${post.id}`)}>
+                        <a onClick={() => navigate(`/post/${post.id}`)}>
                           {post.title}
                         </a>
                       }
@@ -498,6 +594,8 @@ const UserProfilePage = () => {
           </Form.Item>
         </Form>
       </Modal>
+        </main>
+      </div>
     </div>
   );
 };

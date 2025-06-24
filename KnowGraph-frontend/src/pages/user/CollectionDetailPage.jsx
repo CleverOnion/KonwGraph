@@ -211,7 +211,7 @@ const CollectionDetailPage = () => {
                 <List.Item.Meta
                   title={
                     <a 
-                      onClick={() => navigate(`/posts/${post.id}`)}
+                      onClick={() => navigate(`/post/${post.id}`)}
                       style={{ fontSize: 18, fontWeight: 500 }}
                     >
                       {post.title}
