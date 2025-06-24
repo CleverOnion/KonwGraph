@@ -73,7 +73,15 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     public List<UserCollection> getCollectionsByUserId(Long userId) {
-        return userCollectionMapper.selectByUserId(userId);
+        List<UserCollection> collections = userCollectionMapper.selectByUserId(userId);
+        
+        // 为每个收藏夹计算文章数量
+        for (UserCollection collection : collections) {
+            List<CollectionItem> items = collectionItemMapper.selectByCollectionId(collection.getId());
+            collection.setPostCount(items.size());
+        }
+        
+        return collections;
     }
 
     @Override
@@ -153,6 +161,24 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    public boolean canAccessCollection(Long collectionId) {
+        UserCollection collection = userCollectionMapper.selectById(collectionId);
+        if (collection == null) {
+            return false; // 收藏夹不存在，不可访问
+        }
+        
+        Long currentUserId = StpUtil.getLoginIdAsLong();
+        
+        // 如果是自己的收藏夹，可以访问
+        if (Objects.equals(collection.getUserId(), currentUserId)) {
+            return true;
+        }
+        
+        // 如果是别人的收藏夹，只有公开的才能访问
+        return !collection.getIsPrivate();
+    }
+
+    @Override
     @Transactional
     public void bookmarkPostToDefaultCollection(Long postId) {
         Long userId = StpUtil.getLoginIdAsLong();
@@ -197,5 +223,14 @@ public class CollectionServiceImpl implements CollectionService {
                 collectionItemMapper.delete(collection.getId(), postId);
             }
         }
+    }
+
+    @Override
+    public UserCollection getCollectionById(Long collectionId) {
+        UserCollection collection = userCollectionMapper.selectById(collectionId);
+        if (collection == null) {
+            throw new RuntimeException("收藏夹不存在");
+        }
+        return collection;
     }
 }

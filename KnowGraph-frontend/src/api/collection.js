@@ -42,6 +42,14 @@ export const getPostsInCollection = (collectionId) => {
   });
 };
 
+// 检查收藏夹是否可以访问
+export const canAccessCollection = (collectionId) => {
+  return request({
+    url: `/collections/${collectionId}/can-access`,
+    method: "get",
+  });
+};
+
 // 添加文章到收藏夹
 export const addPostToCollection = (collectionId, postId) => {
   return request({

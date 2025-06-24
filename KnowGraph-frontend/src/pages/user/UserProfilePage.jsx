@@ -364,7 +364,7 @@ const UserProfilePage = () => {
             <Title level={2}>{profile.nickname || profile.username}</Title>
             <Paragraph type="secondary">{profile.bio || '这个人很懒，什么都没有留下...'}</Paragraph>
             <Space size="large">
-              {profile.createTime && <Text type="secondary">注册时间: {new Date(profile.createTime).toLocaleDateString()}</Text>}
+              {profile.createdAt && <Text type="secondary">注册时间: {new Date(profile.createdAt).toLocaleDateString()}</Text>}
               {profile.lastLoginTime && <Text type="secondary">最后活跃: {new Date(profile.lastLoginTime).toLocaleDateString()}</Text>}
             </Space>
           </Col>

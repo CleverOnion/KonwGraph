@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/collections")
@@ -57,8 +59,15 @@ public class CollectionController {
     // --- 收藏夹内容管理 ---
 
     @GetMapping("/{collectionId}/posts")
-    public R<List<PostSimpleVO>> getPostsInCollection(@PathVariable Long collectionId) {
-        return R.ok(collectionService.getPostsInCollection(collectionId));
+    public R<Map<String, Object>> getPostsInCollection(@PathVariable Long collectionId) {
+        List<PostSimpleVO> posts = collectionService.getPostsInCollection(collectionId);
+        UserCollection collection = collectionService.getCollectionById(collectionId);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("posts", posts);
+        result.put("collection", collection);
+        
+        return R.ok(result);
     }
 
     @PostMapping("/{collectionId}/posts/{postId}")
@@ -78,6 +87,11 @@ public class CollectionController {
     public R<Boolean> isPostCollected(@PathVariable Long postId) {
         Long userId = StpUtil.getLoginIdAsLong();
         return R.ok(collectionService.isPostCollected(userId, postId));
+    }
+
+    @GetMapping("/{collectionId}/can-access")
+    public R<Boolean> canAccessCollection(@PathVariable Long collectionId) {
+        return R.ok(collectionService.canAccessCollection(collectionId));
     }
 
     @PostMapping("/posts/{postId}/bookmark")

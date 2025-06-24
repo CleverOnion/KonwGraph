@@ -210,9 +210,9 @@ public class PostServiceImpl implements PostService {
             vo.setTitle(post.getTitle());
             vo.setSummary(post.getSummary());
             vo.setPublishedAt(post.getPublishedAt());
-            vo.setViewCount(post.getViewCount());
-            vo.setLikeCount(post.getLikeCount());
-            vo.setCommentCount(post.getCommentCount());
+            vo.setViewCount(post.getViewCount() != null ? post.getViewCount() : 0);
+            vo.setLikeCount(post.getLikeCount() != null ? post.getLikeCount() : 0);
+            vo.setCommentCount(post.getCommentCount() != null ? post.getCommentCount() : 0);
             vo.setAuthor(mapToUserProfileVO(userMap.get(post.getUserId())));
             return vo;
         }).collect(Collectors.toList());

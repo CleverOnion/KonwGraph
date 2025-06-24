@@ -105,9 +105,8 @@
         update posts set view_count = view_count + 1 where id = #{postId}
     </update>
 
-    <select id="selectByIds" resultType="com.cleveronion.knowgraph.content.domain.entity.Post">
-        SELECT *
-        FROM posts
+    <select id="selectByIds" resultMap="PostResult">
+        <include refid="selectPostVo"/>
         WHERE id IN
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}

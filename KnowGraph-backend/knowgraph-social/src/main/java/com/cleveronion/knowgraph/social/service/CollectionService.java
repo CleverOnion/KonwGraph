@@ -78,4 +78,21 @@ public interface CollectionService {
      * @param postId 文章ID
      */
     void unbookmarkPostFromAllCollections(Long postId);
+
+    /**
+     * 检查收藏夹是否可以访问
+     * 规则：1. 如果是自己的收藏夹，可以访问
+     *      2. 如果是别人的公开收藏夹，可以访问
+     *      3. 如果是别人的私密收藏夹，不可以访问
+     * @param collectionId 收藏夹ID
+     * @return true表示可以访问，false表示不可以访问
+     */
+    boolean canAccessCollection(Long collectionId);
+
+    /**
+     * 根据ID获取收藏夹
+     * @param collectionId 收藏夹ID
+     * @return 收藏夹实体
+     */
+    UserCollection getCollectionById(Long collectionId);
 }

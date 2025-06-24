@@ -53,4 +53,9 @@ public class UserCollection implements Serializable {
      * 更新时间
      */
     private LocalDateTime updatedAt;
-} 
+
+    /**
+     * 收藏夹中的文章数量（非数据库字段，用于前端显示）
+     */
+    private Integer postCount;
+}
