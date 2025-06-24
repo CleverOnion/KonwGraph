@@ -27,6 +27,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public CategoryVO getCategoryById(Integer id) {
+        Category category = categoryMapper.selectById(id);
+        if (category == null) {
+            throw new ServiceException("分类不存在");
+        }
+        return toVO(category);
+    }
+
+    @Override
     @Transactional
     public CategoryVO createCategory(CategoryCreateDTO createDTO) {
         Category category = new Category();

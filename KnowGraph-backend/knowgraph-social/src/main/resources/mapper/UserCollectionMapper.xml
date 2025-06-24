@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cleveronion.knowgraph.social.mapper.UserCollectionMapper">
 
+    <resultMap id="UserCollectionResultMap" type="com.cleveronion.knowgraph.social.domain.entity.UserCollection">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="isPrivate" column="is_private"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
     <insert id="insert" parameterType="com.cleveronion.knowgraph.social.domain.entity.UserCollection" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_collection (user_id, name, description, is_private, created_at, updated_at)
         VALUES (#{userId}, #{name}, #{description}, #{isPrivate}, #{createdAt}, #{updatedAt})
@@ -20,17 +30,17 @@
         DELETE FROM user_collection WHERE id = #{id}
     </delete>
 
-    <select id="selectById" resultType="com.cleveronion.knowgraph.social.domain.entity.UserCollection">
+    <select id="selectById" resultMap="UserCollectionResultMap">
         SELECT id, user_id, name, description, is_private, created_at, updated_at
         FROM user_collection
         WHERE id = #{id}
     </select>
 
-    <select id="selectByUserId" resultType="com.cleveronion.knowgraph.social.domain.entity.UserCollection">
+    <select id="selectByUserId" resultMap="UserCollectionResultMap">
         SELECT id, user_id, name, description, is_private, created_at, updated_at
         FROM user_collection
         WHERE user_id = #{userId}
         ORDER BY created_at DESC
     </select>
 
-</mapper> 
+</mapper>

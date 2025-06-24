@@ -4,11 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cleveronion.knowgraph.content.mapper.TagMapper">
 
-    <select id="selectByName" resultType="com.cleveronion.knowgraph.content.domain.entity.Tag">
+    <!-- 定义Tag的ResultMap，解决数据库字段名与Java属性名不匹配的问题 -->
+    <resultMap id="TagResultMap" type="com.cleveronion.knowgraph.content.domain.entity.Tag">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="slug" column="slug" />
+        <result property="postCount" column="post_count" />
+    </resultMap>
+
+    <select id="selectByName" resultMap="TagResultMap">
         select id, name, slug, post_count from tags where name = #{name}
     </select>
     
-    <select id="selectByNames" resultType="com.cleveronion.knowgraph.content.domain.entity.Tag">
+    <select id="selectByNames" resultMap="TagResultMap">
         select id, name, slug, post_count from tags where name IN
         <foreach item="item" index="index" collection="names" open="(" separator="," close=")">
             #{item}
@@ -22,15 +30,15 @@
         </foreach>
     </insert>
 
-    <select id="selectTagsByPostId" resultType="com.cleveronion.knowgraph.content.domain.entity.Tag">
-        select t.id, t.name, t.slug
+    <select id="selectTagsByPostId" resultMap="TagResultMap">
+        select t.id, t.name, t.slug, t.post_count
         from tags t
         inner join post_tags pt on t.id = pt.tag_id
         where pt.post_id = #{postId}
     </select>
 
-    <select id="selectAll" resultType="com.cleveronion.knowgraph.content.domain.entity.Tag">
+    <select id="selectAll" resultMap="TagResultMap">
         select id, name, slug, post_count from tags order by post_count desc
     </select>
 
-</mapper> 
+</mapper>

@@ -24,6 +24,11 @@ public class CategoryController {
         return R.ok(categoryService.getAllCategories());
     }
 
+    @GetMapping("/{id}")
+    public R<CategoryVO> getCategoryById(@PathVariable Integer id) {
+        return R.ok(categoryService.getCategoryById(id));
+    }
+
     @PostMapping
     //@SaCheckRole("ADMIN")
     public R<CategoryVO> createCategory(@RequestBody CategoryCreateDTO createDTO) {
@@ -47,4 +52,4 @@ public class CategoryController {
     public String isLogin() {
         return StpUtil.getTokenValue() + " " + StpUtil.getLoginId() + " " + StpUtil.getLoginDevice();
     }
-} 
+}

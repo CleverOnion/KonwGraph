@@ -48,9 +48,15 @@ public interface PostService {
     void deletePost(Long postId, Long userId);
 
     /**
-     * 根据文章ID列表批量获取文章简要信息
+     * 根据文章ID列表获取文章简要信息
      * @param postIds 文章ID列表
      * @return 文章简要信息列表
      */
     List<PostSimpleVO> listSimplePostsByIds(List<Long> postIds);
-} 
+
+    /**
+     * 增加文章浏览量
+     * @param postId 文章ID
+     */
+    void incrementViewCount(Long postId);
+}

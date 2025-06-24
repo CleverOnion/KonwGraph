@@ -4,7 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cleveronion.knowgraph.social.mapper.LikeMapper">
 
-    <select id="selectOne" resultType="com.cleveronion.knowgraph.social.domain.entity.Like">
+    <!-- 定义Like的ResultMap，解决数据库字段名与Java属性名不匹配的问题 -->
+    <resultMap id="LikeResultMap" type="com.cleveronion.knowgraph.social.domain.entity.Like">
+        <id property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="likableId" column="likable_id" />
+        <result property="likableType" column="likable_type" />
+        <result property="createdAt" column="created_at" />
+    </resultMap>
+
+    <select id="selectOne" resultMap="LikeResultMap">
         select id, user_id, likable_id, likable_type, created_at
         from likes
         where user_id = #{userId} and likable_id = #{likableId} and likable_type = #{likableType}
@@ -19,4 +28,4 @@
         delete from likes where id = #{id}
     </delete>
 
-</mapper> 
+</mapper>

@@ -67,9 +67,16 @@ public interface PostMapper {
     int incrementCommentCount(Long postId);
 
     /**
+     * 增加文章的浏览数
+     * @param postId 文章ID
+     * @return 影响行数
+     */
+    int incrementViewCount(Long postId);
+
+    /**
      * 根据ID批量查询文章
      * @param ids 文章ID列表
      * @return 文章实体列表
      */
     List<Post> selectByIds(@Param("ids") List<Long> ids);
-} 
+}

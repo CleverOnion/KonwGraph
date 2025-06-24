@@ -66,4 +66,16 @@ public interface CollectionService {
      * @return 如果在任何一个收藏夹中则返回true，否则false
      */
     boolean isPostCollected(Long userId, Long postId);
-} 
+
+    /**
+     * 将文章收藏到默认收藏夹（如果没有收藏夹则自动创建）
+     * @param postId 文章ID
+     */
+    void bookmarkPostToDefaultCollection(Long postId);
+
+    /**
+     * 从所有收藏夹中移除文章
+     * @param postId 文章ID
+     */
+    void unbookmarkPostFromAllCollections(Long postId);
+}

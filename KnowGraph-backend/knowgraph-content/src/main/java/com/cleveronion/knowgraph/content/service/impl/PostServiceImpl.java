@@ -294,4 +294,9 @@ public class PostServiceImpl implements PostService {
             return vo;
         }).collect(Collectors.toList());
     }
-} 
+
+    @Override
+    public void incrementViewCount(Long postId) {
+        postMapper.incrementViewCount(postId);
+    }
+}

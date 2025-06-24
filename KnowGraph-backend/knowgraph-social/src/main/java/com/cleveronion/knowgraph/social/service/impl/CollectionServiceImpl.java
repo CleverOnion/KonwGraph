@@ -151,4 +151,51 @@ public class CollectionServiceImpl implements CollectionService {
         }
         return collection;
     }
-} 
+
+    @Override
+    @Transactional
+    public void bookmarkPostToDefaultCollection(Long postId) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        
+        // 获取用户的收藏夹列表
+        List<UserCollection> collections = userCollectionMapper.selectByUserId(userId);
+        
+        UserCollection defaultCollection;
+        if (CollectionUtils.isEmpty(collections)) {
+            // 如果用户没有收藏夹，创建一个默认收藏夹
+            defaultCollection = createCollection("我的收藏", "默认收藏夹", false);
+        } else {
+            // 使用第一个收藏夹作为默认收藏夹
+            defaultCollection = collections.get(0);
+        }
+        
+        // 检查文章是否已经在该收藏夹中
+        if (collectionItemMapper.selectOne(defaultCollection.getId(), postId) != null) {
+            throw new ServiceException("文章已在收藏夹中");
+        }
+        
+        // 添加到收藏夹
+        addPostToCollection(defaultCollection.getId(), postId);
+    }
+
+    @Override
+    @Transactional
+    public void unbookmarkPostFromAllCollections(Long postId) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        
+        // 获取用户的所有收藏夹
+        List<UserCollection> collections = userCollectionMapper.selectByUserId(userId);
+        
+        if (CollectionUtils.isEmpty(collections)) {
+            return; // 用户没有收藏夹，无需操作
+        }
+        
+        // 从所有收藏夹中移除该文章
+        for (UserCollection collection : collections) {
+            CollectionItem existingItem = collectionItemMapper.selectOne(collection.getId(), postId);
+            if (existingItem != null) {
+                collectionItemMapper.delete(collection.getId(), postId);
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getHotPosts } from '../../api/recommendation';
+import { getPosts, likePost, unlikePost, bookmarkPost, unbookmarkPost, getPostStatus } from "../../api/post";
 import Message from '../../components/Message';
 import './HotPage.css';
 import '../../styles/sidebar.css';
@@ -24,10 +25,48 @@ const HotPage = () => {
       });
       if (response.code === 200) {
         const newPosts = response.data?.list || [];
-        if (append) {
-          setHotPosts(prev => [...prev, ...newPosts]);
+        
+        // 检查用户是否登录
+        const tokenName = localStorage.getItem("tokenName");
+        const tokenValue = localStorage.getItem("tokenValue");
+        
+        let postsWithStatus = newPosts;
+        if (tokenName && tokenValue) {
+          // 如果用户已登录，获取每篇文章的点赞收藏状态
+          postsWithStatus = await Promise.all(
+            newPosts.map(async (post) => {
+              try {
+                const statusResponse = await getPostStatus(post.id);
+                if (statusResponse.code === 200) {
+                  return {
+                    ...post,
+                    liked: statusResponse.data.liked || false,
+                    bookmarked: statusResponse.data.bookmarked || false
+                  };
+                }
+              } catch (error) {
+                console.error(`获取文章${post.id}状态失败:`, error);
+              }
+              return {
+                ...post,
+                liked: false,
+                bookmarked: false
+              };
+            })
+          );
         } else {
-          setHotPosts(newPosts);
+          // 如果用户未登录，设置默认状态
+          postsWithStatus = newPosts.map(post => ({
+            ...post,
+            liked: false,
+            bookmarked: false
+          }));
+        }
+        
+        if (append) {
+          setHotPosts(prev => [...prev, ...postsWithStatus]);
+        } else {
+          setHotPosts(postsWithStatus);
         }
         setHasMore(newPosts.length === pageSize);
       } else {
@@ -47,6 +86,115 @@ const HotPage = () => {
       const nextPage = currentPage + 1;
       setCurrentPage(nextPage);
       fetchHotPosts(nextPage, true);
+    }
+  };
+
+  // 处理点赞
+  const handleLike = async (postId, index, isLiked) => {
+    // 检查用户是否登录
+    const tokenName = localStorage.getItem("tokenName");
+    const tokenValue = localStorage.getItem("tokenValue");
+    if (!tokenName || !tokenValue) {
+      Message.error("请先登录后再进行点赞操作");
+      return;
+    }
+
+    try {
+      // 调用切换点赞状态接口
+      const response = await likePost(postId);
+      if (response.code === 200) {
+        // 更新本地状态
+        const updatedPosts = [...hotPosts];
+        const newLikedState = !isLiked;
+        updatedPosts[index].liked = newLikedState;
+        updatedPosts[index].likeCount = newLikedState 
+          ? (updatedPosts[index].likeCount || 0) + 1 
+          : Math.max(0, (updatedPosts[index].likeCount || 1) - 1);
+        setHotPosts(updatedPosts);
+        Message.success(newLikedState ? "点赞成功" : "取消点赞");
+      } else {
+        console.error("点赞操作失败:", response);
+        Message.error(response.msg || "操作失败");
+      }
+    } catch (error) {
+      console.error("点赞操作失败:", error);
+      // 检查是否是网络错误或认证错误
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 401) {
+          Message.error("登录已过期，请重新登录");
+        } else if (status === 403) {
+          Message.error("没有权限进行此操作");
+        } else if (status === 404) {
+          Message.error("文章不存在");
+        } else {
+          Message.error(`服务器错误: ${error.response.data?.msg || '系统异常'}`);
+        }
+      } else if (error.request) {
+        Message.error("网络连接失败，请检查网络");
+      } else {
+        Message.error("操作失败，请重试");
+      }
+    }
+  };
+  
+  // 处理收藏
+  const handleBookmark = async (postId, index, isBookmarked) => {
+    // 检查用户是否登录
+    const tokenName = localStorage.getItem("tokenName");
+    const tokenValue = localStorage.getItem("tokenValue");
+    if (!tokenName || !tokenValue) {
+      Message.error("请先登录后再进行收藏操作");
+      return;
+    }
+
+    try {
+      if (isBookmarked) {
+        // 取消收藏
+        const response = await unbookmarkPost(postId);
+        if (response.code === 200) {
+          // 更新本地状态
+          const updatedPosts = [...hotPosts];
+          updatedPosts[index].bookmarked = false;
+          setHotPosts(updatedPosts);
+          Message.success("取消收藏");
+        } else {
+          console.error("取消收藏失败:", response);
+          Message.error(response.msg || "取消收藏失败");
+        }
+      } else {
+        // 收藏
+        const response = await bookmarkPost(postId);
+        if (response.code === 200) {
+          // 更新本地状态
+          const updatedPosts = [...hotPosts];
+          updatedPosts[index].bookmarked = true;
+          setHotPosts(updatedPosts);
+          Message.success("收藏成功");
+        } else {
+          console.error("收藏失败:", response);
+          Message.error(response.msg || "收藏失败");
+        }
+      }
+    } catch (error) {
+      console.error("收藏操作失败:", error);
+      // 检查是否是网络错误或认证错误
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 401) {
+          Message.error("登录已过期，请重新登录");
+        } else if (status === 403) {
+          Message.error("没有权限进行此操作");
+        } else if (status === 404) {
+          Message.error("文章不存在");
+        } else {
+          Message.error(`服务器错误: ${error.response.data?.msg || '系统异常'}`);
+        }
+      } else if (error.request) {
+        Message.error("网络连接失败，请检查网络");
+      } else {
+        Message.error("操作失败，请重试");
+      }
     }
   };
 
@@ -131,10 +279,10 @@ const HotPage = () => {
                 </span>{' '}
                 热门
               </li>
-              <li>
+              <li onClick={() => navigate("/explore")}>
                 <span role="img" aria-label="explore">
                   🧭
-                </span>{' '}
+                </span>{" "}
                 探索
               </li>
               <li>
@@ -222,7 +370,11 @@ const HotPage = () => {
                       </span>
                     </div>
                     <div className="hot-post-actions">
-                      <button className="hot-post-action" title="点赞">
+                      <button 
+                        className={`hot-post-action ${post.liked ? 'hot-post-action-active' : ''}`} 
+                        title={post.liked ? "取消点赞" : "点赞"}
+                        onClick={() => handleLike(post.id, index, post.liked)}
+                      >
                         <span role="img" aria-label="up">
                           👍
                         </span>{' '}
@@ -245,9 +397,13 @@ const HotPage = () => {
                           🔗
                         </span>
                       </button>
-                      <button className="hot-post-action" title="收藏">
+                      <button 
+                        className={`hot-post-action ${post.bookmarked ? 'hot-post-action-active' : ''}`} 
+                        title={post.bookmarked ? "取消收藏" : "收藏"}
+                        onClick={() => handleBookmark(post.id, index, post.bookmarked)}
+                      >
                         <span role="img" aria-label="fav">
-                          ⭐
+                          {post.bookmarked ? '⭐' : '☆'}
                         </span>
                       </button>
                     </div>

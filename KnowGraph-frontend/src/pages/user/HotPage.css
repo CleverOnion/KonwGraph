@@ -290,6 +290,14 @@
   background: #f6f7f8;
   color: #1c1c1c;
 }
+.hot-post-action-active {
+  background: #ff4500 !important;
+  color: #fff !important;
+}
+.hot-post-action-active:hover {
+  background: #e03d00 !important;
+  color: #fff !important;
+}
 
 /* 右侧边栏 */
 .hot-rightbar {

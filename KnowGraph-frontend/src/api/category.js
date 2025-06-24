@@ -7,3 +7,11 @@ export const getAllCategories = () => {
     method: "get",
   });
 };
+
+// 根据ID获取分类详情
+export const getCategoryById = (id) => {
+  return request({
+    url: `/categories/${id}`,
+    method: "get",
+  });
+};

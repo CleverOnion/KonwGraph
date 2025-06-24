@@ -101,6 +101,10 @@
         update posts set comment_count = comment_count + 1 where id = #{postId}
     </update>
 
+    <update id="incrementViewCount">
+        update posts set view_count = view_count + 1 where id = #{postId}
+    </update>
+
     <select id="selectByIds" resultType="com.cleveronion.knowgraph.content.domain.entity.Post">
         SELECT *
         FROM posts
@@ -111,4 +115,4 @@
         AND deleted_at IS NULL
     </select>
 
-</mapper> 
+</mapper>

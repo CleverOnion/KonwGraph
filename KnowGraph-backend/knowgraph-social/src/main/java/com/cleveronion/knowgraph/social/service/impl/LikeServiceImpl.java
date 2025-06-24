@@ -48,4 +48,12 @@ public class LikeServiceImpl implements LikeService {
             return new LikeResultVO(true, post.getLikeCount() + 1);
         }
     }
-} 
+
+    @Override
+    public boolean isPostLiked(Long userId, Long postId) {
+        Like existingLike = likeMapper.selectOne(userId, postId, LIKABLE_TYPE_POST);
+        return existingLike != null;
+    }
+
+
+}

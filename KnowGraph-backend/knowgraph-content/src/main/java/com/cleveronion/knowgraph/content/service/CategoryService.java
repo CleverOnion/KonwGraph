@@ -10,9 +10,11 @@ public interface CategoryService {
 
     List<CategoryVO> getAllCategories();
 
+    CategoryVO getCategoryById(Integer id);
+
     CategoryVO createCategory(CategoryCreateDTO createDTO);
 
     CategoryVO updateCategory(Integer id, CategoryUpdateDTO updateDTO);
 
     void deleteCategory(Integer id);
-} 
+}

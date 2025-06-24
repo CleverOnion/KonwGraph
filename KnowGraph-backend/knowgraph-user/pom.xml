@@ -20,6 +20,8 @@
             <artifactId>knowgraph-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+
         <!-- Common -->
         <dependency>
             <groupId>com.cleveronion</groupId>

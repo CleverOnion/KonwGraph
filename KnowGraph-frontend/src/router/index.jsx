@@ -17,6 +17,7 @@ import NotificationsPage from "../pages/user/NotificationsPage";
 import CategoryDetailPage from "../pages/user/CategoryDetailPage";
 import TagDetailPage from "../pages/user/TagDetailPage";
 import HotPage from "../pages/user/HotPage";
+import ExplorePage from "../pages/user/ExplorePage";
 
 // 管理页面
 import AdminLoginPage from "../pages/admin/AdminLoginPage";
@@ -34,6 +35,10 @@ const routes = [
   {
     path: "/hot",
     element: <HotPage />,
+  },
+  {
+    path: "/explore",
+    element: <ExplorePage />,
   },
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },

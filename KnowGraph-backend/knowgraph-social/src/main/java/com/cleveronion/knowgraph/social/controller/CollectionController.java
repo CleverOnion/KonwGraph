@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/collections")
 @RequiredArgsConstructor
 public class CollectionController {
 
@@ -22,7 +22,7 @@ public class CollectionController {
 
     // --- 收藏夹管理 ---
 
-    @PostMapping("/collections")
+    @PostMapping
     public R<UserCollection> createCollection(@Validated @RequestBody CollectionCreateDTO createDTO) {
         UserCollection collection = collectionService.createCollection(
                 createDTO.getName(),
@@ -32,7 +32,7 @@ public class CollectionController {
         return R.ok(collection);
     }
 
-    @PutMapping("/collections/{collectionId}")
+    @PutMapping("/{collectionId}")
     public R<Void> updateCollection(@PathVariable Long collectionId, @Validated @RequestBody CollectionUpdateDTO updateDTO) {
         collectionService.updateCollection(
                 collectionId,
@@ -43,31 +43,31 @@ public class CollectionController {
         return R.ok();
     }
 
-    @DeleteMapping("/collections/{collectionId}")
+    @DeleteMapping("/{collectionId}")
     public R<Void> deleteCollection(@PathVariable Long collectionId) {
         collectionService.deleteCollection(collectionId);
         return R.ok();
     }
 
-    @GetMapping("/users/{userId}/collections")
+    @GetMapping("/users/{userId}")
     public R<List<UserCollection>> getUserCollections(@PathVariable Long userId) {
         return R.ok(collectionService.getCollectionsByUserId(userId));
     }
 
     // --- 收藏夹内容管理 ---
 
-    @GetMapping("/collections/{collectionId}/posts")
+    @GetMapping("/{collectionId}/posts")
     public R<List<PostSimpleVO>> getPostsInCollection(@PathVariable Long collectionId) {
         return R.ok(collectionService.getPostsInCollection(collectionId));
     }
 
-    @PostMapping("/collections/{collectionId}/posts/{postId}")
+    @PostMapping("/{collectionId}/posts/{postId}")
     public R<Void> addPostToCollection(@PathVariable Long collectionId, @PathVariable Long postId) {
         collectionService.addPostToCollection(collectionId, postId);
         return R.ok();
     }
 
-    @DeleteMapping("/collections/{collectionId}/posts/{postId}")
+    @DeleteMapping("/{collectionId}/posts/{postId}")
     public R<Void> removePostFromCollection(@PathVariable Long collectionId, @PathVariable Long postId) {
         collectionService.removePostFromCollection(collectionId, postId);
         return R.ok();
@@ -79,4 +79,16 @@ public class CollectionController {
         Long userId = StpUtil.getLoginIdAsLong();
         return R.ok(collectionService.isPostCollected(userId, postId));
     }
-} 
+
+    @PostMapping("/posts/{postId}/bookmark")
+    public R<Void> bookmarkPost(@PathVariable Long postId) {
+        collectionService.bookmarkPostToDefaultCollection(postId);
+        return R.ok();
+    }
+
+    @DeleteMapping("/posts/{postId}/bookmark")
+    public R<Void> unbookmarkPost(@PathVariable Long postId) {
+        collectionService.unbookmarkPostFromAllCollections(postId);
+        return R.ok();
+    }
+}

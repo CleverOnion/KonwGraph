@@ -5,7 +5,7 @@ import { ArrowLeftOutlined, HeartOutlined, HeartFilled, StarOutlined, StarFilled
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { getPostDetail } from "../../api/post";
+import { getPostDetail, likePost, unlikePost, bookmarkPost, unbookmarkPost, getPostStatus, incrementViewCount } from "../../api/post";
 import { getComments, createComment } from "../../api/comment";
 import './PostDetailPage.css';
 
@@ -21,17 +21,40 @@ const PostDetailPage = () => {
   const [commentLoading, setCommentLoading] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [replyTo, setReplyTo] = useState(null);
+  const [viewCountIncremented, setViewCountIncremented] = useState(false);
+
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   // 获取文章详情
   const fetchPostDetail = async () => {
     try {
       setLoading(true);
-      const response = await getPostDetail(id);
-      if (response.code === 200) {
-        setPost(response.data);
-        setLikeCount(response.data.likeCount || 0);
+      const [postResponse, statusResponse] = await Promise.all([
+        getPostDetail(id),
+        getPostStatus(id)
+      ]);
+      
+      if (postResponse.code === 200) {
+        setPost(postResponse.data);
+        setLikeCount(postResponse.data.likeCount || 0);
       } else {
-        message.error(response.msg || "获取文章详情失败");
+        message.error(postResponse.msg || "获取文章详情失败");
+        return;
+      }
+      
+      if (statusResponse.code === 200) {
+        setLiked(statusResponse.data.liked || false);
+        setBookmarked(statusResponse.data.bookmarked || false);
+      }
+      
+      // 增加浏览量（只在首次加载时增加）
+      if (!viewCountIncremented) {
+        try {
+          await incrementViewCount(id);
+          setViewCountIncremented(true);
+        } catch (error) {
+          console.error("增加浏览量失败:", error);
+        }
       }
     } catch (error) {
       console.error("获取文章详情失败:", error);
@@ -41,18 +64,118 @@ const PostDetailPage = () => {
     }
   };
 
-  // 点赞功能
-  const handleLike = () => {
-    setLiked(!liked);
-    setLikeCount(prev => liked ? prev - 1 : prev + 1);
-    message.success(liked ? "取消点赞" : "点赞成功");
+  // 处理点赞
+  const handleLike = async () => {
+    // 检查用户是否登录
+    const tokenName = localStorage.getItem("tokenName");
+    const tokenValue = localStorage.getItem("tokenValue");
+    if (!tokenName || !tokenValue) {
+      message.error("请先登录后再进行点赞操作");
+      return;
+    }
+
+    // 检查文章ID是否存在
+    if (!id) {
+      message.error("文章ID不存在");
+      return;
+    }
+
+    try {
+      // 调用切换点赞状态接口
+      const response = await likePost(id);
+      if (response.code === 200) {
+        // 切换点赞状态
+        const newLikedState = !liked;
+        setLiked(newLikedState);
+        setLikeCount(prev => newLikedState ? prev + 1 : Math.max(0, prev - 1));
+        Message.success(newLikedState ? "点赞成功" : "取消点赞");
+      } else {
+        console.error("点赞操作失败:", response);
+        Message.error(response.msg || "操作失败");
+      }
+    } catch (error) {
+      console.error("点赞操作失败:", error);
+      // 检查是否是网络错误或认证错误
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 401) {
+          message.error("登录已过期，请重新登录");
+        } else if (status === 403) {
+          message.error("没有权限进行此操作");
+        } else if (status === 404) {
+          message.error("文章不存在");
+        } else {
+          message.error(`服务器错误: ${error.response.data?.msg || '系统异常'}`);
+        }
+      } else if (error.request) {
+        message.error("网络连接失败，请检查网络");
+      } else {
+        message.error("操作失败，请重试");
+      }
+    }
   };
 
   // 收藏功能
-  const handleBookmark = () => {
-    setBookmarked(!bookmarked);
-    message.success(bookmarked ? "取消收藏" : "收藏成功");
+  const handleBookmark = async () => {
+    // 检查用户是否登录
+    const tokenName = localStorage.getItem("tokenName");
+    const tokenValue = localStorage.getItem("tokenValue");
+    if (!tokenName || !tokenValue) {
+      message.error("请先登录后再进行收藏操作");
+      return;
+    }
+
+    // 检查文章ID是否存在
+    if (!id) {
+      message.error("文章ID不存在");
+      return;
+    }
+
+    try {
+      if (bookmarked) {
+        // 取消收藏
+        const response = await unbookmarkPost(id);
+        if (response.code === 200) {
+          setBookmarked(false);
+          message.success("取消收藏");
+        } else {
+          console.error("取消收藏失败:", response);
+          message.error(response.msg || "取消收藏失败");
+        }
+      } else {
+        // 收藏到默认收藏夹
+        const response = await bookmarkPost(id);
+        if (response.code === 200) {
+          setBookmarked(true);
+          message.success("收藏成功");
+        } else {
+          console.error("收藏失败:", response);
+          message.error(response.msg || "收藏失败");
+        }
+      }
+    } catch (error) {
+      console.error("收藏操作失败:", error);
+      // 检查是否是网络错误或认证错误
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 401) {
+          message.error("登录已过期，请重新登录");
+        } else if (status === 403) {
+          message.error("没有权限进行此操作");
+        } else if (status === 404) {
+          message.error("文章不存在");
+        } else {
+          message.error(`服务器错误: ${error.response.data?.msg || '系统异常'}`);
+        }
+      } else if (error.request) {
+        message.error("网络连接失败，请检查网络");
+      } else {
+        message.error("操作失败，请重试");
+      }
+    }
   };
+
+
 
   // 分享功能
   const handleShare = () => {
@@ -133,8 +256,20 @@ const PostDetailPage = () => {
 
   useEffect(() => {
     if (id) {
+      setViewCountIncremented(false); // 重置浏览量增加标志
       fetchPostDetail();
       fetchComments();
+    }
+    
+    // 获取当前用户ID
+    const userInfo = localStorage.getItem('userInfo');
+    if (userInfo) {
+      try {
+        const user = JSON.parse(userInfo);
+        setCurrentUserId(user.id);
+      } catch (error) {
+        console.error('解析用户信息失败:', error);
+      }
     }
   }, [id]);
 
@@ -414,6 +549,8 @@ const CommentItem = ({ comment, onReply, level = 0 }) => {
           ))}
         </div>
       )}
+      
+     
     </div>
   );
 };

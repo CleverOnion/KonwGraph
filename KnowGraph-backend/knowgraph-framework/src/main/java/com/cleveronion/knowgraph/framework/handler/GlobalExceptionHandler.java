@@ -11,11 +11,11 @@ import static cn.dev33.satoken.SaManager.log;
 
 @RestControllerAdvice
    public class GlobalExceptionHandler {
-       @ExceptionHandler(Exception.class)
-       public R<Void> handleException(Exception e) {
-           log.error("系统异常", e);
-           return R.fail(ResultCode.INTERNAL_SERVER_ERROR);
-       }
+       //@ExceptionHandler(Exception.class)
+       //public R<Void> handleException(Exception e) {
+       //    log.error("系统异常", e.getMessage());
+       //    return R.fail(ResultCode.INTERNAL_SERVER_ERROR);
+       //}
 
        @ExceptionHandler(ServiceException.class)
        public R<Void> handleServiceException(ServiceException e) {

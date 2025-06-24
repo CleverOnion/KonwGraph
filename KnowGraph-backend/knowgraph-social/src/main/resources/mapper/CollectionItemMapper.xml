@@ -2,33 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cleveronion.knowgraph.social.mapper.CollectionItemMapper">
 
+    <!-- 定义CollectionItem的ResultMap，解决数据库字段名与Java属性名不匹配的问题 -->
+    <resultMap id="CollectionItemResultMap" type="com.cleveronion.knowgraph.social.domain.entity.CollectionItem">
+        <result property="collectionId" column="collection_id" />
+        <result property="postId" column="post_id" />
+        <result property="createdAt" column="created_at" />
+    </resultMap>
+
     <insert id="insert" parameterType="com.cleveronion.knowgraph.social.domain.entity.CollectionItem">
-        INSERT INTO collection_item (collection_id, post_id, created_at)
+        INSERT INTO collection_items (collection_id, post_id, created_at)
         VALUES (#{collectionId}, #{postId}, #{createdAt})
     </insert>
 
     <delete id="delete">
-        DELETE FROM collection_item
+        DELETE FROM collection_items
         WHERE collection_id = #{collectionId} AND post_id = #{postId}
     </delete>
 
-    <select id="selectByCollectionId" resultType="com.cleveronion.knowgraph.social.domain.entity.CollectionItem">
+    <select id="selectByCollectionId" resultMap="CollectionItemResultMap">
         SELECT collection_id, post_id, created_at
-        FROM collection_item
+        FROM collection_items
         WHERE collection_id = #{collectionId}
         ORDER BY created_at DESC
     </select>
 
-    <select id="selectByPostId" resultType="com.cleveronion.knowgraph.social.domain.entity.CollectionItem">
+    <select id="selectByPostId" resultMap="CollectionItemResultMap">
         SELECT collection_id, post_id, created_at
-        FROM collection_item
+        FROM collection_items
         WHERE post_id = #{postId}
     </select>
 
-    <select id="selectOne" resultType="com.cleveronion.knowgraph.social.domain.entity.CollectionItem">
+    <select id="selectOne" resultMap="CollectionItemResultMap">
         SELECT collection_id, post_id, created_at
-        FROM collection_item
+        FROM collection_items
         WHERE collection_id = #{collectionId} AND post_id = #{postId}
     </select>
 
-</mapper> 
+</mapper>
