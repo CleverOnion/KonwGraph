@@ -130,3 +130,12 @@ export const getPostsByCategory = (categoryId, params) => {
     params,
   });
 };
+
+// 获取指定用户的文章列表
+export const getPostsByUserId = (userId, params) => {
+  return request({
+    url: `/posts/user/${userId}`,
+    method: "get",
+    params,
+  });
+};

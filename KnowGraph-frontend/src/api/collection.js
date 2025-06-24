@@ -1,4 +1,4 @@
-import request from "./request";
+import request from './request';
 
 // 获取用户的收藏夹列表
 export const getUserCollections = (userId) => {
@@ -58,10 +58,26 @@ export const removePostFromCollection = (collectionId, postId) => {
   });
 };
 
-// 检查文章是否已收藏
+// 检查文章是否被收藏
 export const isPostCollected = (postId) => {
   return request({
     url: `/collections/posts/${postId}/is-collected`,
     method: "get",
+  });
+};
+
+// 快速收藏文章到默认收藏夹
+export const bookmarkPost = (postId) => {
+  return request({
+    url: `/collections/posts/${postId}/bookmark`,
+    method: "post",
+  });
+};
+
+// 取消收藏文章
+export const unbookmarkPost = (postId) => {
+  return request({
+    url: `/collections/posts/${postId}/bookmark`,
+    method: "delete",
   });
 };

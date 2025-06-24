@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getHotPosts } from '../../api/recommendation';
 import { getPosts, likePost, unlikePost, bookmarkPost, unbookmarkPost, getPostStatus } from "../../api/post";
+import { getMyProfile } from '../../api/personal';
 import Message from '../../components/Message';
 import './HotPage.css';
 import '../../styles/sidebar.css';
@@ -138,6 +139,31 @@ const HotPage = () => {
     }
   };
   
+  // 处理个人空间点击
+  const handleProfileClick = async () => {
+    // 检查用户是否登录
+    const tokenName = localStorage.getItem("tokenName");
+    const tokenValue = localStorage.getItem("tokenValue");
+    if (!tokenName || !tokenValue) {
+      Message.error("请先登录后再访问个人空间");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await getMyProfile();
+      if (response.code === 200) {
+        const userId = response.data.id;
+        navigate(`/users/${userId}`);
+      } else {
+        Message.error("获取用户信息失败");
+      }
+    } catch (error) {
+      console.error("获取用户信息失败:", error);
+      Message.error("获取用户信息失败，请重试");
+    }
+  };
+
   // 处理收藏
   const handleBookmark = async (postId, index, isBookmarked) => {
     // 检查用户是否登录
@@ -285,7 +311,7 @@ const HotPage = () => {
                 </span>{" "}
                 探索
               </li>
-              <li>
+              <li onClick={handleProfileClick}>
                 <span role="img" aria-label="profile">
                   👤
                 </span>{' '}

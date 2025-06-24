@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllCategories } from '../../api/category';
+import { getMyProfile } from '../../api/personal';
 import Message from '../../components/Message';
 import './ExplorePage.css';
 import '../../styles/sidebar.css';
@@ -32,6 +33,31 @@ const ExplorePage = () => {
   // 处理分类点击
   const handleCategoryClick = (categoryId) => {
     navigate(`/category/${categoryId}`);
+  };
+
+  // 处理个人空间点击
+  const handleProfileClick = async () => {
+    // 检查用户是否登录
+    const tokenName = localStorage.getItem("tokenName");
+    const tokenValue = localStorage.getItem("tokenValue");
+    if (!tokenName || !tokenValue) {
+      Message.error("请先登录后再访问个人空间");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await getMyProfile();
+      if (response.code === 200) {
+        const userId = response.data.id;
+        navigate(`/users/${userId}`);
+      } else {
+        Message.error("获取用户信息失败");
+      }
+    } catch (error) {
+      console.error("获取用户信息失败:", error);
+      Message.error("获取用户信息失败，请重试");
+    }
   };
 
   useEffect(() => {
@@ -90,7 +116,7 @@ const ExplorePage = () => {
                 </span>{' '}
                 探索
               </li>
-              <li>
+              <li onClick={handleProfileClick}>
                 <span role="img" aria-label="profile">
                   👤
                 </span>{' '}

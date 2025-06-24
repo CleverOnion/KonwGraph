@@ -12,6 +12,7 @@ import PostDetailPage from "../pages/user/PostDetailPage";
 import EditorPage from "../pages/user/EditorPage";
 import SearchResultPage from "../pages/user/SearchResultPage";
 import UserProfilePage from "../pages/user/UserProfilePage";
+import CollectionDetailPage from "../pages/user/CollectionDetailPage";
 import SettingsPage from "../pages/user/SettingsPage";
 import NotificationsPage from "../pages/user/NotificationsPage";
 import CategoryDetailPage from "../pages/user/CategoryDetailPage";
@@ -61,8 +62,12 @@ const routes = [
         element: <SearchResultPage />,
       },
       {
-        path: "user/:id",
+        path: "users/:userId",
         element: <UserProfilePage />,
+      },
+      {
+        path: "collections/:collectionId",
+        element: <CollectionDetailPage />,
       },
       {
         path: "settings",
