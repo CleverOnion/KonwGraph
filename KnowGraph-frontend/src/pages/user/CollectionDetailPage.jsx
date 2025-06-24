@@ -47,6 +47,8 @@ const CollectionDetailPage = () => {
   const [collection, setCollection] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
+  const [removeModalVisible, setRemoveModalVisible] = useState(false);
+  const [postToRemove, setPostToRemove] = useState(null);
 
   // 处理个人空间导航
   const handleProfileClick = async () => {
@@ -136,20 +138,40 @@ const CollectionDetailPage = () => {
 
   // 从收藏夹移除文章
   const handleRemovePost = (postId) => {
-    Modal.confirm({
-      title: '确认移除',
-      content: '确定要从收藏夹中移除这篇文章吗？',
-      onOk: async () => {
-        try {
-          await removePostFromCollection(collectionId, postId);
-          setPosts(posts.filter(post => post.id !== postId));
-          message.success('移除成功');
-        } catch (error) {
-          console.error('移除文章失败:', error);
-          message.error('移除失败');
-        }
-      }
-    });
+    console.log('handleRemovePost called with postId:', postId);
+    console.log('isOwner:', isOwner);
+    
+    if (!isOwner) {
+      message.error('您没有权限移除文章');
+      return;
+    }
+    
+    setPostToRemove(postId);
+    setRemoveModalVisible(true);
+  };
+  
+  // 确认移除文章
+  const confirmRemovePost = async () => {
+    if (!postToRemove) return;
+    
+    try {
+      console.log('开始移除文章:', collectionId, postToRemove);
+      await removePostFromCollection(collectionId, postToRemove);
+      setPosts(posts.filter(post => post.id !== postToRemove));
+      message.success('移除成功');
+    } catch (error) {
+      console.error('移除文章失败:', error);
+      message.error('移除失败: ' + (error.response?.data?.message || error.message));
+    } finally {
+      setRemoveModalVisible(false);
+      setPostToRemove(null);
+    }
+  };
+  
+  // 取消移除文章
+  const cancelRemovePost = () => {
+    setRemoveModalVisible(false);
+    setPostToRemove(null);
   };
 
   // 分享收藏夹
@@ -546,6 +568,19 @@ const CollectionDetailPage = () => {
             </>
         ) : null}
       </main>
+      
+      {/* 自定义确认移除对话框 */}
+      <Modal
+        title="确认移除"
+        open={removeModalVisible}
+        onOk={confirmRemovePost}
+        onCancel={cancelRemovePost}
+        okText="确定"
+        cancelText="取消"
+        okType="danger"
+      >
+        <p>确定要从收藏夹中移除这篇文章吗？</p>
+      </Modal>
     </div>
   );
 };
