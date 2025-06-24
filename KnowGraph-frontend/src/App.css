@@ -1,0 +1,278 @@
+/* 可以在这里添加 App 组件的特定样式 */
+
+body {
+  background: #dae0e6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  min-height: 100vh;
+}
+
+.reddit-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #fff;
+  overflow: hidden;
+}
+.reddit-bg-bubble {
+  position: absolute;
+  background: #f6f7f8;
+  border-radius: 24px;
+  opacity: 1;
+}
+
+/* 示例气泡分布，可根据实际效果调整 */
+.reddit-bg-bubble1 {
+  left: 10vw;
+  top: 10vh;
+  width: 180px;
+  height: 80px;
+}
+.reddit-bg-bubble2 {
+  left: 30vw;
+  top: 20vh;
+  width: 120px;
+  height: 60px;
+}
+.reddit-bg-bubble3 {
+  left: 60vw;
+  top: 15vh;
+  width: 200px;
+  height: 90px;
+}
+.reddit-bg-bubble4 {
+  left: 20vw;
+  top: 50vh;
+  width: 140px;
+  height: 70px;
+}
+.reddit-bg-bubble5 {
+  left: 50vw;
+  top: 60vh;
+  width: 160px;
+  height: 80px;
+}
+.reddit-bg-bubble6 {
+  left: 70vw;
+  top: 40vh;
+  width: 100px;
+  height: 50px;
+}
+.reddit-bg-bubble7 {
+  left: 80vw;
+  top: 10vh;
+  width: 120px;
+  height: 60px;
+  opacity: 0.7;
+}
+.reddit-bg-bubble8 {
+  left: 5vw;
+  top: 70vh;
+  width: 160px;
+  height: 80px;
+  opacity: 0.5;
+}
+.reddit-bg-bubble9 {
+  left: 25vw;
+  top: 80vh;
+  width: 110px;
+  height: 55px;
+  opacity: 0.6;
+}
+.reddit-bg-bubble10 {
+  left: 40vw;
+  top: 75vh;
+  width: 200px;
+  height: 90px;
+  opacity: 0.4;
+}
+.reddit-bg-bubble11 {
+  left: 60vw;
+  top: 80vh;
+  width: 130px;
+  height: 65px;
+  opacity: 0.5;
+}
+.reddit-bg-bubble12 {
+  left: 75vw;
+  top: 70vh;
+  width: 150px;
+  height: 70px;
+  opacity: 0.6;
+}
+.reddit-bg-bubble13 {
+  left: 85vw;
+  top: 50vh;
+  width: 100px;
+  height: 50px;
+  opacity: 0.5;
+}
+.reddit-bg-bubble14 {
+  left: 10vw;
+  top: 35vh;
+  width: 90px;
+  height: 45px;
+  opacity: 0.6;
+}
+.reddit-bg-bubble15 {
+  left: 90vw;
+  top: 25vh;
+  width: 80px;
+  height: 40px;
+  opacity: 0.4;
+}
+.reddit-bg-bubble16 {
+  left: 55vw;
+  top: 35vh;
+  width: 120px;
+  height: 60px;
+  opacity: 0.5;
+}
+
+.reddit-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.13),
+    0 1.5px 6px 0 rgba(0, 0, 0, 0.07);
+  padding: 36px 32px 28px 32px;
+  width: 100%;
+  max-width: 410px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  position: relative;
+  transition: box-shadow 0.2s, border-radius 0.2s;
+}
+
+@media (max-width: 600px) {
+  .reddit-card {
+    max-width: 98vw;
+    padding: 24px 8px 18px 8px;
+    border-radius: 12px;
+  }
+}
+
+.reddit-logo {
+  display: flex;
+  align-items: center;
+  font-size: 2.1rem;
+  font-weight: bold;
+  color: #ff4500;
+  margin-bottom: 18px;
+  letter-spacing: 2px;
+}
+.reddit-logo-icon {
+  width: 34px;
+  height: 34px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.reddit-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 10px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.reddit-tip {
+  font-size: 0.98rem;
+  color: #444;
+  margin-bottom: 20px;
+  text-align: center;
+  line-height: 1.7;
+}
+.reddit-tip a {
+  color: #0079d3;
+  text-decoration: none;
+  font-weight: 500;
+}
+.reddit-tip a:hover {
+  text-decoration: underline;
+}
+
+.reddit-form {
+  width: 100%;
+}
+
+.reddit-input {
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  font-size: 1.08rem;
+  background: #f6f7f8;
+  color: #222;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+.reddit-input:focus {
+  border-color: #0079d3;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 2px #e3f1fc;
+}
+.reddit-input::placeholder {
+  color: #bcbcbc;
+  font-size: 1rem;
+}
+
+.reddit-btn {
+  width: 100%;
+  background: #0079d3;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 0;
+  font-size: 1.08rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1.5px 6px 0 rgba(0, 0, 0, 0.07);
+}
+.reddit-btn:disabled {
+  background: #edeff1;
+  color: #aaa;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.reddit-btn:hover:not(:disabled) {
+  background: #1484d6;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.reddit-link {
+  color: #0079d3;
+  text-decoration: none;
+  font-size: 0.98rem;
+  margin-top: 8px;
+  font-weight: 500;
+}
+.reddit-link:hover {
+  text-decoration: underline;
+}
+
+.reddit-error {
+  color: #d93025;
+  font-size: 0.98rem;
+  margin-bottom: 14px;
+  text-align: left;
+  width: 100%;
+  font-weight: 500;
+}
+
+.reddit-form-bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 0.98rem;
+}

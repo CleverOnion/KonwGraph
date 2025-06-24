@@ -24,11 +24,6 @@ public class Category implements Serializable {
     private Integer id;
 
     /**
-     * 父分类ID，用于实现层级结构
-     */
-    private Integer parentId;
-
-    /**
      * 分类名称
      */
     private String name;

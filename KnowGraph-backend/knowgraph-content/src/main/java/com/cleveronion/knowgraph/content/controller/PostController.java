@@ -64,4 +64,9 @@ public class PostController {
         postService.deletePost(id, userId);
         return R.ok();
     }
+
+    @RequestMapping("isLogin")
+    public String isLogin() {
+        return StpUtil.getTokenValue() + " " + StpUtil.getLoginId();
+    }
 } 

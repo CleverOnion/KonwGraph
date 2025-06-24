@@ -2,6 +2,7 @@ package com.cleveronion.knowgraph.recommendation.controller;
 
 import com.cleveronion.knowgraph.common.core.domain.R;
 import com.cleveronion.knowgraph.content.domain.vo.PostSimpleVO;
+import com.cleveronion.knowgraph.recommendation.domain.vo.HotPostVO;
 import com.cleveronion.knowgraph.recommendation.service.RecommendationService;
 import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
@@ -31,4 +32,19 @@ public class RecommendationController {
         PageInfo<PostSimpleVO> recommendedPosts = recommendationService.getRecommendedPosts(pageNum, pageSize);
         return R.ok(recommendedPosts);
     }
-} 
+
+    /**
+     * 获取热门文章列表
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页数量
+     * @return 分页的热门文章列表（包含热度值）
+     */
+    @GetMapping("/hot")
+    public R<PageInfo<HotPostVO>> getHotPosts(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<HotPostVO> hotPosts = recommendationService.getHotPosts(pageNum, pageSize);
+        return R.ok(hotPosts);
+    }
+}

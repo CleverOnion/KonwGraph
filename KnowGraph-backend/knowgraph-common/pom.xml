@@ -29,6 +29,17 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>3.0.2</version> <!-- Spring Boot 3.x 默认使用此版本 -->
         </dependency>
+        <!-- Spring Web for RestController -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- Sa-Token 权限认证 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
+            <version>1.38.0</version>
+        </dependency>
     </dependencies>
 
 </project> 

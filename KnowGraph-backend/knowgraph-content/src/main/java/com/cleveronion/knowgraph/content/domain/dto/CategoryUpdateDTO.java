@@ -7,7 +7,6 @@ import lombok.Data;
  */
 @Data
 public class CategoryUpdateDTO {
-    private Integer parentId;
     private String name;
     private String slug;
     private String description;

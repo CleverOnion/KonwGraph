@@ -103,11 +103,12 @@
 
     <select id="selectByIds" resultType="com.cleveronion.knowgraph.content.domain.entity.Post">
         SELECT *
-        FROM post
+        FROM posts
         WHERE id IN
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
+        AND deleted_at IS NULL
     </select>
 
 </mapper> 

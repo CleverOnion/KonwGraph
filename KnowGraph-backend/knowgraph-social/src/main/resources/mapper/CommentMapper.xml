@@ -4,16 +4,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cleveronion.knowgraph.social.mapper.CommentMapper">
 
+    <resultMap type="com.cleveronion.knowgraph.social.domain.entity.Comment" id="CommentResult">
+        <id     property="id"        column="id"         />
+        <result property="postId"    column="post_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="parentId"  column="parent_id"  />
+        <result property="content"   column="content"    />
+        <result property="status"    column="status"     />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+    </resultMap>
+
+    <sql id="selectCommentVo">
+        select id, post_id, user_id, parent_id, content, status, created_at, updated_at
+        from comments
+    </sql>
+
     <insert id="insert" parameterType="com.cleveronion.knowgraph.social.domain.entity.Comment" useGeneratedKeys="true" keyProperty="id">
         insert into comments(post_id, user_id, parent_id, content, status, created_at, updated_at)
         values(#{postId}, #{userId}, #{parentId}, #{content}, #{status}, now(), now())
     </insert>
 
-    <select id="selectVisibleByPostId" resultType="com.cleveronion.knowgraph.social.domain.entity.Comment">
-        select id, post_id, user_id, parent_id, content, status, created_at, updated_at
-        from comments
+    <select id="selectVisibleByPostId" resultMap="CommentResult">
+        <include refid="selectCommentVo"/>
         where post_id = #{postId} and status = 'VISIBLE'
         order by created_at asc
     </select>
 
-</mapper> 
+</mapper>

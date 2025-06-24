@@ -1,0 +1,103 @@
+.reddit-message-root {
+  position: fixed;
+  top: 32px;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.reddit-message {
+  min-width: 220px;
+  max-width: 96vw;
+  margin-top: 12px;
+  background: #fff;
+  color: #222;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.09);
+  padding: 18px 38px 18px 24px;
+  font-size: 1.13rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  pointer-events: all;
+  opacity: 0;
+  transform: translateY(-24px) scale(0.98);
+  animation: reddit-message-in 0.32s cubic-bezier(0.4, 1.6, 0.6, 1) forwards,
+    reddit-message-out 0.32s 1.8s cubic-bezier(0.4, 1.6, 0.6, 1) forwards;
+  position: relative;
+  text-align: left;
+  line-height: 1.7;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.reddit-message-icon {
+  margin-right: 18px;
+  position: static;
+  left: unset;
+  top: unset;
+  transform: none;
+  font-size: 1.35em;
+  line-height: 1;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.reddit-message-success {
+  border-left: 6px solid #4caf50;
+}
+.reddit-message-error {
+  border-left: 6px solid #d93025;
+}
+.reddit-message-info {
+  border-left: 6px solid #0079d3;
+}
+.reddit-message-warning {
+  border-left: 6px solid #ff9800;
+}
+
+.reddit-message-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 1.5px 6px 0 rgba(0, 0, 0, 0.07);
+  background: #fff;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .reddit-message {
+    min-width: 0;
+    max-width: 98vw;
+    padding: 14px 12px 14px 12px;
+    font-size: 1rem;
+  }
+  .reddit-message-icon {
+    margin-right: 10px;
+    font-size: 1.1em;
+  }
+  .reddit-message-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+  }
+}
+
+@keyframes reddit-message-in {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes reddit-message-out {
+  to {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.98);
+  }
+}

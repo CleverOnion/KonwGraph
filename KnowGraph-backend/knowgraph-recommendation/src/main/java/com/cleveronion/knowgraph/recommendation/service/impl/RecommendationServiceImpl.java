@@ -1,6 +1,7 @@
 package com.cleveronion.knowgraph.recommendation.service.impl;
 
 import com.cleveronion.knowgraph.content.domain.vo.PostSimpleVO;
+import com.cleveronion.knowgraph.recommendation.domain.vo.HotPostVO;
 import com.cleveronion.knowgraph.recommendation.mapper.RecommendationMapper;
 import com.cleveronion.knowgraph.recommendation.service.RecommendationService;
 import com.github.pagehelper.PageHelper;
@@ -25,4 +26,14 @@ public class RecommendationServiceImpl implements RecommendationService {
         // 用 PageInfo 包装查询结果，它会包含总数、总页数等信息
         return new PageInfo<>(posts);
     }
-} 
+
+    @Override
+    public PageInfo<HotPostVO> getHotPosts(Integer pageNum, Integer pageSize) {
+        // 开启分页
+        PageHelper.startPage(pageNum, pageSize);
+        // 调用 Mapper 方法查询热门文章数据
+        List<HotPostVO> hotPosts = recommendationMapper.selectHotPosts();
+        // 用 PageInfo 包装查询结果，它会包含总数、总页数等信息
+        return new PageInfo<>(hotPosts);
+    }
+}

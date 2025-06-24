@@ -5,22 +5,21 @@
 <mapper namespace="com.cleveronion.knowgraph.content.mapper.CategoryMapper">
 
     <select id="selectById" resultType="com.cleveronion.knowgraph.content.domain.entity.Category">
-        select id, parent_id, name, slug, description from categories where id = #{id}
+        select id, name, slug, description from categories where id = #{id}
     </select>
 
     <select id="selectAll" resultType="com.cleveronion.knowgraph.content.domain.entity.Category">
-        select id, parent_id, name, slug, description from categories order by id
+        select id, name, slug, description from categories order by id
     </select>
 
     <insert id="insert" parameterType="com.cleveronion.knowgraph.content.domain.entity.Category" useGeneratedKeys="true" keyProperty="id">
-        insert into categories(parent_id, name, slug, description)
-        values(#{parentId}, #{name}, #{slug}, #{description})
+        insert into categories(name, slug, description)
+        values(#{name}, #{slug}, #{description})
     </insert>
 
     <update id="update" parameterType="com.cleveronion.knowgraph.content.domain.entity.Category">
         update categories
         <set>
-            <if test="parentId != null">parent_id = #{parentId},</if>
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="slug != null and slug != ''">slug = #{slug},</if>
             <if test="description != null">description = #{description},</if>

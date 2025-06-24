@@ -40,4 +40,55 @@
             ) / POW(TIMESTAMPDIFF(HOUR, p.create_time, NOW()) + 2, 1.8) DESC
     </select>
 
-</mapper> 
+    <resultMap id="HotPostVOResultMap" type="com.cleveronion.knowgraph.recommendation.domain.vo.HotPostVO">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="publishedAt" column="published_at"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="hotScore" column="hot_score"/>
+        <!-- 关联查询用户信息 -->
+        <association property="author" javaType="com.cleveronion.knowgraph.user.domain.vo.UserProfileVO">
+            <id property="id" column="author_id"/>
+            <result property="nickname" column="author_nickname"/>
+            <result property="avatarUrl" column="author_avatar"/>
+        </association>
+    </resultMap>
+
+    <select id="selectHotPosts" resultMap="HotPostVOResultMap">
+        SELECT
+            p.id,
+            p.title,
+            p.summary,
+            p.published_at,
+            p.view_count,
+            p.like_count,
+            p.comment_count,
+            u.id as author_id,
+            u.nickname as author_nickname,
+            u.avatar_url as author_avatar,
+            -- 热度算法：综合考虑点赞、评论、浏览量和时间衰减
+            ROUND(
+                (
+                    (COALESCE(p.like_count, 0) * 5) +     -- 点赞权重5
+                    (COALESCE(p.comment_count, 0) * 8) +  -- 评论权重8
+                    (COALESCE(p.view_count, 0) * 1)       -- 浏览权重1
+                ) / 
+                -- 时间衰减因子：发布时间越久，热度越低
+                POW(GREATEST(TIMESTAMPDIFF(HOUR, p.published_at, NOW()), 1) + 2, 1.5),
+                2
+            ) as hot_score
+        FROM
+            posts p
+        JOIN
+            users u ON p.user_id = u.id
+        WHERE
+            p.status = 'PUBLISHED'
+            AND p.published_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)  -- 只考虑30天内的文章
+        ORDER BY
+            hot_score DESC
+    </select>
+
+</mapper>

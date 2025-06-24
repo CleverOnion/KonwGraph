@@ -40,6 +40,8 @@ public class CommentServiceImpl implements CommentService {
         comment.setParentId(createDTO.getParentId());
         comment.setContent(createDTO.getContent());
         comment.setStatus(CommentStatus.VISIBLE);
+        comment.setCreatedAt(java.time.LocalDateTime.now());
+        comment.setUpdatedAt(java.time.LocalDateTime.now());
         commentMapper.insert(comment);
 
         // 2. 更新文章评论数
@@ -100,4 +102,4 @@ public class CommentServiceImpl implements CommentService {
         }
         return vo;
     }
-} 
+}

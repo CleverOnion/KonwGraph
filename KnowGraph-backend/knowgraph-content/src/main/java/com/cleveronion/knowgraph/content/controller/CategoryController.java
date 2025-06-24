@@ -1,6 +1,7 @@
 package com.cleveronion.knowgraph.content.controller;
 
 import cn.dev33.satoken.annotation.SaCheckRole;
+import cn.dev33.satoken.stp.StpUtil;
 import com.cleveronion.knowgraph.common.core.domain.R;
 import com.cleveronion.knowgraph.content.domain.dto.CategoryCreateDTO;
 import com.cleveronion.knowgraph.content.domain.dto.CategoryUpdateDTO;
@@ -24,7 +25,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    @SaCheckRole("ADMIN")
+    //@SaCheckRole("ADMIN")
     public R<CategoryVO> createCategory(@RequestBody CategoryCreateDTO createDTO) {
         return R.ok(categoryService.createCategory(createDTO));
     }
@@ -40,5 +41,10 @@ public class CategoryController {
     public R<Void> deleteCategory(@PathVariable Integer id) {
         categoryService.deleteCategory(id);
         return R.ok();
+    }
+
+    @RequestMapping("isLogin")
+    public String isLogin() {
+        return StpUtil.getTokenValue() + " " + StpUtil.getLoginId() + " " + StpUtil.getLoginDevice();
     }
 } 
