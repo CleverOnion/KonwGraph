@@ -22,7 +22,6 @@ import HotPage from "../pages/user/HotPage";
 import ExplorePage from "../pages/user/ExplorePage";
 
 // 管理页面
-import AdminLoginPage from "../pages/admin/AdminLoginPage";
 import DashboardPage from "../pages/admin/DashboardPage";
 import AdminContentPage from "../pages/admin/AdminContentPage";
 import AdminUserPage from "../pages/admin/AdminUserPage";
@@ -122,10 +121,6 @@ const routes = [
         element: <AdminSettingsPage />,
       },
     ],
-  },
-  {
-    path: "/admin/login",
-    element: <AdminLoginPage />,
   },
 ];
 

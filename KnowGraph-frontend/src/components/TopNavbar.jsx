@@ -176,6 +176,28 @@ const TopNavbar = ({ className = 'reddit-header' }) => {
                       <span>👤</span>
                       <span>个人空间</span>
                     </div>
+                    {user?.role === 'ADMIN' && (
+                      <div 
+                        onClick={() => {
+                          navigate('/admin');
+                          setShowDropdown(false);
+                        }}
+                        style={{
+                          padding: '8px 16px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          fontSize: '14px',
+                          color: '#333'
+                        }}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+                        onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                      >
+                        <span>⚙️</span>
+                        <span>进入管理端</span>
+                      </div>
+                    )}
                     <div style={{ height: '1px', backgroundColor: '#eee', margin: '4px 0' }}></div>
                     <div 
                       onClick={handleLogout}

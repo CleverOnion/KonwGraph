@@ -39,4 +39,9 @@ public class UserProfileVO {
     private Integer points;
 
     private String email;
-} 
+
+    /**
+     * 用户角色
+     */
+    private com.cleveronion.knowgraph.user.domain.enums.UserRole role;
+}
