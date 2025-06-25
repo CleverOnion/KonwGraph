@@ -315,18 +315,10 @@ const UserProfilePage = () => {
                 <Statistic title="关注" value={profile.followingCount || 0} />
               </Col>
               <Col span={8}>
-                <Statistic title="粉丝" value={profile.followersCount || 0} />
+                <Statistic title="粉丝" value={profile.followerCount || 0} />
               </Col>
             </Row>
-            <Divider />
-            <Row gutter={16}>
-              <Col span={12}>
-                <Statistic title="积分" value={profile.points || 0} />
-              </Col>
-              <Col span={12}>
-                <Statistic title="等级" value={profile.level || 1} />
-              </Col>
-            </Row>
+
           </Col>
         </Row>
       </Card>

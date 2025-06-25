@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Avatar, Tag, Divider, Tooltip, message, Input, Spin } from "antd";
-import { ArrowLeftOutlined, HeartOutlined, HeartFilled, StarOutlined, StarFilled, ShareAltOutlined, EyeOutlined, MessageOutlined, ClockCircleOutlined, UserOutlined, CalendarOutlined, CommentOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, HeartOutlined, HeartFilled, StarOutlined, StarFilled, ShareAltOutlined, EyeOutlined, MessageOutlined, ClockCircleOutlined, UserOutlined, CalendarOutlined, CommentOutlined, UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { getPostDetail, likePost, unlikePost, bookmarkPost, unbookmarkPost, getPostStatus, incrementViewCount } from "../../api/post";
 import { getComments, createComment } from "../../api/comment";
+import { toggleFollow, isFollowing } from "../../api/personal";
 import './PostDetailPage.css';
 
 const PostDetailPage = () => {
@@ -22,6 +23,8 @@ const PostDetailPage = () => {
   const [newComment, setNewComment] = useState("");
   const [replyTo, setReplyTo] = useState(null);
   const [viewCountIncremented, setViewCountIncremented] = useState(false);
+  const [isFollowingAuthor, setIsFollowingAuthor] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
 
   const [currentUserId, setCurrentUserId] = useState(null);
 
@@ -45,6 +48,18 @@ const PostDetailPage = () => {
       if (statusResponse.code === 200) {
         setLiked(statusResponse.data.liked || false);
         setBookmarked(statusResponse.data.bookmarked || false);
+      }
+      
+      // 检查是否关注作者
+      if (postResponse.data?.author?.id) {
+        try {
+          const followResponse = await isFollowing(postResponse.data.author.id);
+          if (followResponse.code === 200) {
+            setIsFollowingAuthor(followResponse.data || false);
+          }
+        } catch (error) {
+          console.error("检查关注状态失败:", error);
+        }
       }
       
       // 增加浏览量（只在首次加载时增加）
@@ -181,6 +196,57 @@ const PostDetailPage = () => {
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     message.success("链接已复制到剪贴板");
+  };
+
+  // 处理关注/取消关注
+  const handleFollow = async () => {
+    // 检查用户是否登录
+    const tokenName = localStorage.getItem("tokenName");
+    const tokenValue = localStorage.getItem("tokenValue");
+    if (!tokenName || !tokenValue) {
+      message.error("请先登录后再进行关注操作");
+      return;
+    }
+
+    // 检查作者ID是否存在
+    if (!post?.author?.id) {
+      message.error("作者信息不存在");
+      return;
+    }
+
+    // 不能关注自己
+    if (post.author.id === currentUserId) {
+      message.error("不能关注自己");
+      return;
+    }
+
+    try {
+      setFollowLoading(true);
+      const response = await toggleFollow(post.author.id);
+      if (response.code === 200) {
+        setIsFollowingAuthor(!isFollowingAuthor);
+        message.success(isFollowingAuthor ? "取消关注成功" : "关注成功");
+      } else {
+        console.error("关注操作失败:", response);
+        message.error(response.msg || "关注操作失败");
+      }
+    } catch (error) {
+      console.error("关注操作失败:", error);
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 401) {
+          message.error("登录已过期，请重新登录");
+        } else if (status === 403) {
+          message.error("没有权限进行此操作");
+        } else {
+          message.error(`服务器错误: ${error.response.data?.msg || '系统异常'}`);
+        }
+      } else {
+        message.error("网络连接失败，请检查网络");
+      }
+    } finally {
+      setFollowLoading(false);
+    }
   };
 
   // 获取评论列表
@@ -336,6 +402,19 @@ const PostDetailPage = () => {
                   {formatTime(post.publishedAt || post.createdAt)}
                 </div>
               </div>
+              {/* 关注按钮 */}
+              {post.author?.id && post.author.id !== currentUserId && (
+                <Button
+                  type={isFollowingAuthor ? "default" : "primary"}
+                  size="small"
+                  icon={isFollowingAuthor ? <UserDeleteOutlined /> : <UserAddOutlined />}
+                  loading={followLoading}
+                  onClick={handleFollow}
+                  className="follow-button"
+                >
+                  {isFollowingAuthor ? "取消关注" : "关注"}
+                </Button>
+              )}
             </div>
             
             <div className="post-stats">

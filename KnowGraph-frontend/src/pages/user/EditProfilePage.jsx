@@ -19,6 +19,7 @@ import {
   ArrowLeftOutlined
 } from '@ant-design/icons';
 import { getMyProfile, updateMyProfile } from '../../api/personal';
+import { uploadAvatar } from '../../api/upload';
 import TopNavbar from '../../components/TopNavbar';
 import Sidebar from '../../components/Sidebar';
 import './HomePage.css';
@@ -63,20 +64,44 @@ const EditProfilePage = () => {
   }, [form]);
 
   // 处理头像上传
-  const handleAvatarChange = (info) => {
+  const handleAvatarChange = async (info) => {
     if (info.file.status === 'uploading') {
       return;
     }
     if (info.file.status === 'done') {
-      // 这里应该从服务器响应中获取图片URL
-      // 暂时使用本地预览
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
-        setAvatarUrl(reader.result);
-      });
-      reader.readAsDataURL(info.file.originFileObj);
-      Message.success('头像上传成功');
+      try {
+        // 调用上传接口
+        const response = await uploadAvatar(info.file.originFileObj);
+        if (response.code === 200) {
+          setAvatarUrl(response.data.url);
+          Message.success('头像上传成功');
+        } else {
+          Message.error(response.message || '头像上传失败');
+        }
+      } catch (error) {
+        console.error('头像上传失败:', error);
+        Message.error('头像上传失败');
+      }
     } else if (info.file.status === 'error') {
+      Message.error('头像上传失败');
+    }
+  };
+
+  // 自定义上传逻辑
+  const customUpload = async ({ file, onSuccess, onError }) => {
+    try {
+      const response = await uploadAvatar(file);
+      if (response.code === 200) {
+        setAvatarUrl(response.data.url);
+        onSuccess(response.data);
+        Message.success('头像上传成功');
+      } else {
+        onError(new Error(response.message || '上传失败'));
+        Message.error(response.message || '头像上传失败');
+      }
+    } catch (error) {
+      console.error('头像上传失败:', error);
+      onError(error);
       Message.error('头像上传失败');
     }
   };
@@ -187,9 +212,7 @@ const EditProfilePage = () => {
                     listType="text"
                     showUploadList={false}
                     beforeUpload={beforeUpload}
-                    onChange={handleAvatarChange}
-                    // 这里需要配置实际的上传接口
-                    // action="/api/upload/avatar"
+                    customRequest={customUpload}
                   >
                     <Button icon={<UploadOutlined />}>
                       更换头像

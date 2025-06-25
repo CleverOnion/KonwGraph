@@ -20,6 +20,7 @@ import CategoryDetailPage from "../pages/user/CategoryDetailPage";
 import TagDetailPage from "../pages/user/TagDetailPage";
 import HotPage from "../pages/user/HotPage";
 import ExplorePage from "../pages/user/ExplorePage";
+import TestUploadPage from "../pages/user/TestUploadPage";
 
 // 管理页面
 import DashboardPage from "../pages/admin/DashboardPage";
@@ -94,6 +95,10 @@ const routes = [
       {
         path: "tag/:id",
         element: <TagDetailPage />,
+      },
+      {
+        path: "test-upload",
+        element: <TestUploadPage />,
       },
     ],
   },

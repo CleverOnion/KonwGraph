@@ -159,6 +159,18 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+.follow-button {
+  margin-left: auto;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.follow-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .time-icon {
   font-size: 14px;
 }
