@@ -4,9 +4,10 @@ import { getHotPosts } from '../../api/recommendation';
 import { getPosts, likePost, unlikePost, bookmarkPost, unbookmarkPost, getPostStatus } from "../../api/post";
 import { getMyProfile } from '../../api/personal';
 import Message from '../../components/Message';
+import TopNavbar from '../../components/TopNavbar';
+import Sidebar from '../../components/Sidebar';
 import './HotPage.css';
 import '../../styles/sidebar.css';
-import logo from '../../assets/logo.png';
 
 const HotPage = () => {
   const navigate = useNavigate();
@@ -262,73 +263,11 @@ const HotPage = () => {
   return (
     <div className="hot-page-bg">
       {/* 顶部导航栏 */}
-      <header className="hot-header">
-        <div className="hot-header-left">
-          <img src={logo} alt="logo" className="hot-header-logo" />
-          <span className="hot-header-title">KnowGraph</span>
-        </div>
-        <div className="hot-header-center">
-          <input
-            className="hot-header-search"
-            placeholder="Search KnowGraph"
-          />
-        </div>
-        <div className="hot-header-right">
-          <button className="hot-header-btn">+</button>
-          <button className="hot-header-btn">
-            <span role="img" aria-label="msg">
-              💬
-            </span>
-          </button>
-          <button className="hot-header-avatar">
-            <span role="img" aria-label="user">
-              🧑
-            </span>
-          </button>
-        </div>
-      </header>
+      <TopNavbar className="hot-header" />
 
       <div className="hot-main-layout">
         {/* 左侧栏 */}
-        <aside className="app-sidebar hot-theme">
-          <nav>
-            <ul className="app-menu">
-              <li onClick={() => navigate('/')}>
-                <span role="img" aria-label="home">
-                  🏠
-                </span>{' '}
-                首页
-              </li>
-              <li className="active">
-                <span role="img" aria-label="hot">
-                  🔥
-                </span>{' '}
-                热门
-              </li>
-              <li onClick={() => navigate("/explore")}>
-                <span role="img" aria-label="explore">
-                  🧭
-                </span>{" "}
-                探索
-              </li>
-              <li onClick={handleProfileClick}>
-                <span role="img" aria-label="profile">
-                  👤
-                </span>{' '}
-                个人空间
-              </li>
-            </ul>
-            <div className="app-menu-group">操作</div>
-            <ul className="app-menu">
-              <li className="create-post" onClick={() => navigate('/editor')}>
-                <span role="img" aria-label="write">
-                  ✍️
-                </span>{' '}
-                发布文章
-              </li>
-            </ul>
-          </nav>
-        </aside>
+        <Sidebar activeItem="hot" className="app-sidebar hot-theme" />
 
         {/* 主内容区 */}
         <main className="hot-content">

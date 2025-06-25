@@ -178,56 +178,8 @@ const CollectionDetailPage = () => {
   if (loading) {
     return (
       <div className="app">
-        <header className="reddit-header">
-          <div className="reddit-header-left">
-            <img src={logo} alt="KnowGraph" className="reddit-header-logo" />
-            <span className="reddit-header-title">KnowGraph</span>
-          </div>
-          <div className="reddit-header-center">
-            <Input
-              placeholder="搜索 KnowGraph"
-              prefix={<SearchOutlined />}
-              className="reddit-header-search"
-            />
-          </div>
-          <div className="reddit-header-right">
-            <Button
-              type="text"
-              icon={<BellOutlined />}
-              className="reddit-header-btn"
-            />
-            <Button
-              type="text"
-              icon={<UserOutlined />}
-              className="reddit-header-btn"
-              onClick={handleProfileClick}
-            />
-          </div>
-        </header>
-        <aside className="app-sidebar">
-          <ul className="app-menu">
-            <li onClick={() => navigate('/')}>
-              <HomeOutlined />
-              首页
-            </li>
-            <li onClick={() => navigate('/hot')}>
-              <FireOutlined />
-              热门
-            </li>
-            <li onClick={() => navigate('/explore')}>
-              <CompassOutlined />
-              探索
-            </li>
-            <li onClick={handleProfileClick}>
-              <UserOutlined />
-              个人空间
-            </li>
-            <li onClick={() => navigate('/editor')}>
-              <PlusOutlined />
-              发布文章
-            </li>
-          </ul>
-        </aside>
+        <TopNavbar />
+        <Sidebar activeItem="profile" />
         <main className="reddit-content">
           <div style={{ textAlign: 'center', padding: '50px' }}>加载中...</div>
         </main>
@@ -310,58 +262,10 @@ const CollectionDetailPage = () => {
   return (
     <div className="app">
       {/* 顶部导航栏 */}
-      <header className="reddit-header">
-        <div className="reddit-header-left">
-          <img src={logo} alt="KnowGraph" className="reddit-header-logo" />
-          <span className="reddit-header-title">KnowGraph</span>
-        </div>
-        <div className="reddit-header-center">
-          <Input
-            placeholder="搜索 KnowGraph"
-            prefix={<SearchOutlined />}
-            className="reddit-header-search"
-          />
-        </div>
-        <div className="reddit-header-right">
-          <Button
-            type="text"
-            icon={<BellOutlined />}
-            className="reddit-header-btn"
-          />
-          <Button
-            type="text"
-            icon={<UserOutlined />}
-            className="reddit-header-btn"
-            onClick={handleProfileClick}
-          />
-        </div>
-      </header>
+      <TopNavbar />
 
       {/* 左侧导航栏 */}
-      <aside className="app-sidebar">
-        <ul className="app-menu">
-          <li onClick={() => navigate('/')}>
-            <HomeOutlined />
-            首页
-          </li>
-          <li onClick={() => navigate('/hot')}>
-            <FireOutlined />
-            热门
-          </li>
-          <li onClick={() => navigate('/explore')}>
-            <CompassOutlined />
-            探索
-          </li>
-          <li onClick={handleProfileClick}>
-            <UserOutlined />
-            个人空间
-          </li>
-          <li onClick={() => navigate('/editor')}>
-            <PlusOutlined />
-            发布文章
-          </li>
-        </ul>
-      </aside>
+      <Sidebar activeItem="profile" />
 
       {/* 主内容区域 */}
       <main className="reddit-content">

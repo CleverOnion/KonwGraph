@@ -3,9 +3,10 @@ import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import { getPosts, likePost, unlikePost, bookmarkPost, unbookmarkPost, getPostStatus } from "../../api/post";
 import { getMyProfile } from "../../api/personal";
 import Message from "../../components/Message";
+import TopNavbar from "../../components/TopNavbar";
+import Sidebar from "../../components/Sidebar";
 import "./HomePage.css";
 import "../../styles/sidebar.css";
-import logo from "../../assets/logo.png";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -239,78 +240,10 @@ const HomePage = () => {
   return (
     <div className="reddit-home-bg">
       {/* 顶部导航栏 */}
-      <header className="reddit-header">
-        <div className="reddit-header-left">
-          <img src={logo} alt="logo" className="reddit-header-logo" />
-          <span className="reddit-header-title">KnowGraph</span>
-        </div>
-        <div className="reddit-header-center">
-          <input
-            className="reddit-header-search"
-            placeholder="Search KnowGraph"
-          />
-        </div>
-        <div className="reddit-header-right">
-          <button className="reddit-header-btn">+</button>
-          <button className="reddit-header-btn">
-            <span role="img" aria-label="msg">
-              💬
-            </span>
-          </button>
-          <button className="reddit-header-avatar">
-            <span role="img" aria-label="user">
-              🧑
-            </span>
-          </button>
-        </div>
-      </header>
+      <TopNavbar />
       <div className={`reddit-main-layout ${isEditor ? "editor-mode" : ""}`}>
         {/* 左侧栏 */}
-        <aside className="app-sidebar">
-          <nav>
-            <ul className="app-menu">
-              <li
-                className={!isEditor ? "active" : ""}
-                onClick={() => navigate("/")}
-              >
-                <span role="img" aria-label="home">
-                  🏠
-                </span>{" "}
-                首页
-              </li>
-              <li onClick={() => navigate("/hot")}>
-                <span role="img" aria-label="pop">
-                  🔥
-                </span>{" "}
-                热门
-              </li>
-              <li onClick={() => navigate("/explore")}>
-                <span role="img" aria-label="explore">
-                  🧭
-                </span>{" "}
-                探索
-              </li>
-              <li onClick={handleProfileClick}>
-                <span role="img" aria-label="profile">
-                  👤
-                </span>{" "}
-                个人空间
-              </li>
-            </ul>
-            <div className="app-menu-group">操作</div>
-            <ul className="app-menu">
-              <li
-                className={`create-post ${isEditor ? "active" : ""}`}
-                onClick={() => navigate("/editor")}
-              >
-                <span role="img" aria-label="write">
-                  ✍️
-                </span>{" "}
-                发布文章
-              </li>
-            </ul>
-          </nav>
-        </aside>
+        <Sidebar activeItem={isEditor ? 'editor' : 'home'} />
         {/* 主内容区 */}
         <main className="reddit-content">
           {isEditor ? (
