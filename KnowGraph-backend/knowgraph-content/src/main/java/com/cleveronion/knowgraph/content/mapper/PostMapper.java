@@ -79,4 +79,19 @@ public interface PostMapper {
      * @return 文章实体列表
      */
     List<Post> selectByIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 批量更新文章的分类ID
+     * @param oldCategoryId 原分类ID
+     * @param newCategoryId 新分类ID
+     * @return 影响行数
+     */
+    int updateCategoryId(@Param("oldCategoryId") Integer oldCategoryId, @Param("newCategoryId") Integer newCategoryId);
+
+    /**
+     * 根据分类ID查询文章数量
+     * @param categoryId 分类ID
+     * @return 文章数量
+     */
+    int countByCategoryId(@Param("categoryId") Integer categoryId);
 }

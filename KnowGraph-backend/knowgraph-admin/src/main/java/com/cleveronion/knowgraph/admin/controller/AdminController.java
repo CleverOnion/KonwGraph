@@ -7,14 +7,11 @@ import com.cleveronion.knowgraph.common.core.domain.PageQueryDTO;
 import com.cleveronion.knowgraph.common.core.domain.PageResultVO;
 import com.cleveronion.knowgraph.common.core.domain.R;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
-@SaCheckRole("ADMIN")
 public class AdminController {
 
     private final AdminService adminService;
@@ -27,4 +24,22 @@ public class AdminController {
         PageResultVO<AdminUserVO> pageResult = adminService.listUsers(pageQuery);
         return R.ok(pageResult);
     }
-} 
+
+    /**
+     * 更新用户状态
+     */
+    @PutMapping("/users/{userId}/status")
+    public R<Void> updateUserStatus(@PathVariable Long userId, @RequestParam String status) {
+        adminService.updateUserStatus(userId, status);
+        return R.ok();
+    }
+
+    /**
+     * 更新用户角色
+     */
+    @PutMapping("/users/{userId}/role")
+    public R<Void> updateUserRole(@PathVariable Long userId, @RequestParam String role) {
+        adminService.updateUserRole(userId, role);
+        return R.ok();
+    }
+}

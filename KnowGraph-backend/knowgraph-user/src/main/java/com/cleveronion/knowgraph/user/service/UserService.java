@@ -4,6 +4,8 @@ import com.cleveronion.knowgraph.user.domain.dto.UserLoginDTO;
 import com.cleveronion.knowgraph.user.domain.dto.UserRegisterDTO;
 import com.cleveronion.knowgraph.user.domain.dto.UserUpdateDTO;
 import com.cleveronion.knowgraph.user.domain.entity.User;
+import com.cleveronion.knowgraph.user.domain.enums.UserRole;
+import com.cleveronion.knowgraph.user.domain.enums.UserStatus;
 import com.cleveronion.knowgraph.user.domain.vo.LoginSuccessVO;
 import com.cleveronion.knowgraph.user.domain.vo.UserProfileVO;
 import com.cleveronion.knowgraph.common.core.domain.PageQueryDTO;
@@ -54,4 +56,18 @@ public interface UserService {
      * @param updateDTO 更新信息
      */
     void updateProfile(Long userId, UserUpdateDTO updateDTO);
+
+    /**
+     * 更新用户状态
+     * @param userId 用户ID
+     * @param status 新状态
+     */
+    void updateUserStatus(Long userId, UserStatus status);
+
+    /**
+     * 更新用户角色
+     * @param userId 用户ID
+     * @param role 新角色
+     */
+    void updateUserRole(Long userId, UserRole role);
 }

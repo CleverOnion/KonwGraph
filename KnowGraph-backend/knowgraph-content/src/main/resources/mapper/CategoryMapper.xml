@@ -31,4 +31,11 @@
         delete from categories where id = #{id}
     </delete>
 
-</mapper> 
+    <select id="selectDefaultCategory" resultType="com.cleveronion.knowgraph.content.domain.entity.Category">
+        select id, name, slug, description 
+        from categories 
+        where name = '默认分类' OR slug = 'default'
+        limit 1
+    </select>
+
+</mapper>

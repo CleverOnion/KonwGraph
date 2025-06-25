@@ -1,6 +1,7 @@
 package com.cleveronion.knowgraph.user.domain.vo;
 
 import lombok.Data;
+import com.cleveronion.knowgraph.user.domain.enums.UserRole;
 
 /**
  * 用户个人资料视图对象
@@ -43,5 +44,5 @@ public class UserProfileVO {
     /**
      * 用户角色
      */
-    private com.cleveronion.knowgraph.user.domain.enums.UserRole role;
+    private UserRole role;
 }

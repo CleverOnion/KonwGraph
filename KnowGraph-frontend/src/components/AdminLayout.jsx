@@ -9,13 +9,9 @@ const AdminLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   const menuItems = [
-    { key: '/admin', label: '工作台', icon: '🏠' },
-    { key: '/admin/content', label: '文章管理', icon: '📝' },
+    { key: '/admin', label: '仪表盘', icon: '📊' },
     { key: '/admin/users', label: '用户管理', icon: '👥' },
-    { key: '/admin/reports', label: '举报管理', icon: '🚨' },
-    { key: '/admin/settings', label: '系统管理', icon: '⚙️' },
-    { key: '/admin/analytics', label: '数据中心', icon: '📊' },
-    { key: '/admin/help', label: '帮助中心', icon: '❓' }
+    { key: '/admin/categories', label: '分类管理', icon: '📂' }
   ];
 
   const handleMenuClick = (path) => {

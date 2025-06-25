@@ -25,6 +25,7 @@ import ExplorePage from "../pages/user/ExplorePage";
 import DashboardPage from "../pages/admin/DashboardPage";
 import AdminContentPage from "../pages/admin/AdminContentPage";
 import AdminUserPage from "../pages/admin/AdminUserPage";
+import AdminCategoryPage from "../pages/admin/AdminCategoryPage";
 import AdminReportPage from "../pages/admin/AdminReportPage";
 import AdminSettingsPage from "../pages/admin/AdminSettingsPage";
 
@@ -111,6 +112,10 @@ const routes = [
       {
         path: "users",
         element: <AdminUserPage />,
+      },
+      {
+        path: "categories",
+        element: <AdminCategoryPage />,
       },
       {
         path: "reports",

@@ -5,6 +5,8 @@ import com.cleveronion.knowgraph.admin.service.AdminService;
 import com.cleveronion.knowgraph.common.core.domain.PageQueryDTO;
 import com.cleveronion.knowgraph.common.core.domain.PageResultVO;
 import com.cleveronion.knowgraph.user.domain.entity.User;
+import com.cleveronion.knowgraph.user.domain.enums.UserRole;
+import com.cleveronion.knowgraph.user.domain.enums.UserStatus;
 import com.cleveronion.knowgraph.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -33,9 +35,21 @@ public class AdminServiceImpl implements AdminService {
         return new PageResultVO<>(userPageResult.getTotal(), adminUserVOs);
     }
 
+    @Override
+    public void updateUserStatus(Long userId, String status) {
+        UserStatus userStatus = UserStatus.valueOf(status);
+        userService.updateUserStatus(userId, userStatus);
+    }
+
+    @Override
+    public void updateUserRole(Long userId, String role) {
+        UserRole userRole = UserRole.valueOf(role);
+        userService.updateUserRole(userId, userRole);
+    }
+
     private AdminUserVO convertToAdminUserVO(User user) {
         AdminUserVO adminUserVO = new AdminUserVO();
         BeanUtils.copyProperties(user, adminUserVO);
         return adminUserVO;
     }
-} 
+}

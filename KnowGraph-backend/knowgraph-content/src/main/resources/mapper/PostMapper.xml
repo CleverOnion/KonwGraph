@@ -114,4 +114,16 @@
         AND deleted_at IS NULL
     </select>
 
+    <update id="updateCategoryId">
+        UPDATE posts 
+        SET category_id = #{newCategoryId}, updated_at = NOW()
+        WHERE category_id = #{oldCategoryId} AND deleted_at IS NULL
+    </update>
+
+    <select id="countByCategoryId" resultType="int">
+        SELECT COUNT(*) 
+        FROM posts 
+        WHERE category_id = #{categoryId} AND deleted_at IS NULL
+    </select>
+
 </mapper>

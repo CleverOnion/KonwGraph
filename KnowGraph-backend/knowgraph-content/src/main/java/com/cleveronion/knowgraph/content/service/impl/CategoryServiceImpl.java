@@ -6,6 +6,7 @@ import com.cleveronion.knowgraph.content.domain.dto.CategoryUpdateDTO;
 import com.cleveronion.knowgraph.content.domain.entity.Category;
 import com.cleveronion.knowgraph.content.domain.vo.CategoryVO;
 import com.cleveronion.knowgraph.content.mapper.CategoryMapper;
+import com.cleveronion.knowgraph.content.mapper.PostMapper;
 import com.cleveronion.knowgraph.content.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
+    private final PostMapper postMapper;
 
     @Override
     public List<CategoryVO> getAllCategories() {
@@ -73,10 +75,50 @@ public class CategoryServiceImpl implements CategoryService {
         if (category == null) {
             throw new ServiceException("分类不存在");
         }
+        
+        // 检查该分类下是否有文章
+        int postCount = postMapper.countByCategoryId(id);
+        if (postCount > 0) {
+            // 查找或创建默认分类
+            Category defaultCategory = getOrCreateDefaultCategory();
+            
+            // 将该分类下的所有文章转移到默认分类
+            int updatedPosts = postMapper.updateCategoryId(id, defaultCategory.getId());
+            if (updatedPosts != postCount) {
+                throw new ServiceException("文章转移失败");
+            }
+        }
+        
+        // 删除分类
         int rows = categoryMapper.deleteById(id);
         if (rows != 1) {
             throw new ServiceException("删除分类失败");
         }
+    }
+    
+    /**
+     * 获取或创建默认分类
+     * @return 默认分类
+     */
+    private Category getOrCreateDefaultCategory() {
+        // 先查找是否存在默认分类
+        Category defaultCategory = categoryMapper.selectDefaultCategory();
+        
+        if (defaultCategory == null) {
+            // 如果不存在，则创建默认分类
+            defaultCategory = Category.builder()
+                    .name("默认分类")
+                    .slug("default")
+                    .description("系统默认分类，用于存放未分类的文章")
+                    .build();
+            
+            int rows = categoryMapper.insert(defaultCategory);
+            if (rows != 1) {
+                throw new ServiceException("创建默认分类失败");
+            }
+        }
+        
+        return defaultCategory;
     }
 
     private CategoryVO toVO(Category category) {

@@ -41,4 +41,10 @@ public interface CategoryMapper {
      * @return 影响行数
      */
     int deleteById(Integer id);
-} 
+
+    /**
+     * 查找默认分类
+     * @return 默认分类实体
+     */
+    Category selectDefaultCategory();
+}

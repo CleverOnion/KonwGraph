@@ -142,4 +142,46 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("更新用户资料失败");
         }
     }
+
+    @Override
+    @Transactional
+    public void updateUserStatus(Long userId, UserStatus status) {
+        // 1. 检查用户是否存在
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new ServiceException("用户不存在");
+        }
+
+        // 2. 构建更新对象
+        User updateUser = new User();
+        updateUser.setId(userId);
+        updateUser.setStatus(status);
+
+        // 3. 执行更新
+        int result = userMapper.updateById(updateUser);
+        if (result == 0) {
+            throw new ServiceException("更新用户状态失败");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateUserRole(Long userId, UserRole role) {
+        // 1. 检查用户是否存在
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new ServiceException("用户不存在");
+        }
+
+        // 2. 构建更新对象
+        User updateUser = new User();
+        updateUser.setId(userId);
+        updateUser.setRole(role);
+
+        // 3. 执行更新
+        int result = userMapper.updateById(updateUser);
+        if (result == 0) {
+            throw new ServiceException("更新用户角色失败");
+        }
+    }
 }

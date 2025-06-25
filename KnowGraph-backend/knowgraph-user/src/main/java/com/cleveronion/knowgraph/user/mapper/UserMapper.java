@@ -55,4 +55,11 @@ public interface UserMapper {
      * @return 影响行数
      */
     int updateProfile(User user);
+
+    /**
+     * 根据ID更新用户信息
+     * @param user 用户实体
+     * @return 影响行数
+     */
+    int updateById(User user);
 }
