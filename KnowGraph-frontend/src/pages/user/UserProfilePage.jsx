@@ -35,7 +35,6 @@ import Message from '../../components/Message';
 import { getPersonalProfile, getMyProfile, toggleFollow, isFollowing, getFollowingList, getFollowerList } from '../../api/personal';
 import { getUserCollections, createCollection, deleteCollection, getPostsInCollection } from '../../api/collection';
 import { getPostsByUserId } from '../../api/post';
-import Message from '../../components/Message';
 import './HomePage.css';
 import '../../styles/sidebar.css';
 import logo from '../../assets/logo.png';

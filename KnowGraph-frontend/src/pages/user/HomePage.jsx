@@ -352,7 +352,7 @@ const HomePage = () => {
                     <div className="reddit-post-meta">
                       <span>
                         by{" "}
-                        <a href={`/user/${post.author?.id}`}>
+                        <a href={`/users/${post.author?.id}`}>
                           {post.author?.nickname || post.author?.username}
                         </a>
                       </span>
