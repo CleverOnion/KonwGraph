@@ -31,4 +31,19 @@
         order by created_at asc
     </select>
 
+    <select id="selectById" resultMap="CommentResult">
+        <include refid="selectCommentVo"/>
+        where id = #{id}
+    </select>
+
+    <update id="updateById" parameterType="com.cleveronion.knowgraph.social.domain.entity.Comment">
+        update comments
+        <set>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="status != null">status = #{status},</if>
+            updated_at = now()
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

@@ -21,4 +21,18 @@ public interface CommentMapper {
      * @return 评论实体列表
      */
     List<Comment> selectVisibleByPostId(Long postId);
-} 
+
+    /**
+     * 根据评论ID查询评论
+     * @param id 评论ID
+     * @return 评论实体
+     */
+    Comment selectById(Long id);
+
+    /**
+     * 根据ID更新评论
+     * @param comment 评论实体
+     * @return 影响行数
+     */
+    int updateById(Comment comment);
+}
