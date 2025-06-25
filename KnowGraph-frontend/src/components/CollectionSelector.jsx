@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Select, Button, Input, Form, message } from 'antd';
+import { Modal, List, Button, Input, Form } from 'antd';
+import Message from './Message';
 import { PlusOutlined } from '@ant-design/icons';
 import { getUserCollections, createCollection } from '../api/collection';
 
@@ -27,11 +28,11 @@ const CollectionSelector = ({ visible, onCancel, onConfirm, userId }) => {
           setShowCreateForm(true);
         }
       } else {
-        message.error('获取收藏夹列表失败');
+        Message.error('获取收藏夹列表失败');
       }
     } catch (error) {
       console.error('获取收藏夹失败:', error);
-      message.error('获取收藏夹失败');
+      Message.error('获取收藏夹失败');
     } finally {
       setLoading(false);
     }
@@ -48,7 +49,7 @@ const CollectionSelector = ({ visible, onCancel, onConfirm, userId }) => {
       });
       
       if (response.code === 200) {
-        message.success('收藏夹创建成功');
+        Message.success('收藏夹创建成功');
         form.resetFields();
         setShowCreateForm(false);
         // 重新获取收藏夹列表
@@ -56,11 +57,11 @@ const CollectionSelector = ({ visible, onCancel, onConfirm, userId }) => {
         // 自动选择新创建的收藏夹
         setSelectedCollectionId(response.data.id);
       } else {
-        message.error(response.msg || '创建收藏夹失败');
+        Message.error(response.msg || '创建收藏夹失败');
       }
     } catch (error) {
       console.error('创建收藏夹失败:', error);
-      message.error('创建收藏夹失败');
+      Message.error('创建收藏夹失败');
     } finally {
       setCreateLoading(false);
     }
@@ -69,7 +70,7 @@ const CollectionSelector = ({ visible, onCancel, onConfirm, userId }) => {
   // 确认收藏
   const handleConfirm = () => {
     if (!selectedCollectionId) {
-      message.warning('请选择一个收藏夹');
+      Message.warning('请选择一个收藏夹');
       return;
     }
     onConfirm(selectedCollectionId);

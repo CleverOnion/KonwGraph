@@ -7,14 +7,15 @@ import {
   Space,
   Tag,
   Empty,
-  message,
   Modal,
   Typography,
   Breadcrumb,
   Avatar,
   Tooltip,
-  Input
+  Input,
+  Spin
 } from 'antd';
+import Message from '../../components/Message';
 import {
   ArrowLeftOutlined,
   EyeOutlined,
@@ -52,7 +53,7 @@ const CollectionDetailPage = () => {
   const handleProfileClick = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
-      message.error('请先登录');
+      Message.error('请先登录');
       navigate('/login');
       return;
     }
@@ -63,7 +64,7 @@ const CollectionDetailPage = () => {
       navigate(`/users/${userId}`);
     } catch (error) {
       console.error('获取用户信息失败:', error);
-      message.error('获取用户信息失败');
+      Message.error('获取用户信息失败');
     }
   };
 
@@ -90,7 +91,7 @@ const CollectionDetailPage = () => {
         const accessResponse = await canAccessCollection(collectionId);
         console.log('权限检查结果:', accessResponse);
         if (!accessResponse.data) {
-          message.error('收藏夹不存在或无权访问');
+          Message.error('收藏夹不存在或无权访问');
           setCollection(null);
           setPosts([]);
           return;
@@ -111,9 +112,9 @@ const CollectionDetailPage = () => {
       } catch (error) {
         console.error('获取收藏夹文章失败:', error);
         if (error.response && error.response.status === 403) {
-          message.error('收藏夹不存在或无权访问');
+          Message.error('收藏夹不存在或无权访问');
         } else {
-          message.error('获取收藏夹文章失败');
+          Message.error('获取收藏夹文章失败');
         }
         setCollection(null); // 确保在错误时设置collection为null
         setPosts([]);
@@ -140,7 +141,7 @@ const CollectionDetailPage = () => {
     console.log('isOwner:', isOwner);
     
     if (!isOwner) {
-      message.error('您没有权限移除文章');
+      Message.error('您没有权限移除文章');
       return;
     }
     
@@ -156,10 +157,10 @@ const CollectionDetailPage = () => {
       console.log('开始移除文章:', collectionId, postToRemove);
       await removePostFromCollection(collectionId, postToRemove);
       setPosts(posts.filter(post => post.id !== postToRemove));
-      message.success('移除成功');
+      Message.success('移除成功');
     } catch (error) {
       console.error('移除文章失败:', error);
-      message.error('移除失败: ' + (error.response?.data?.message || error.message));
+      Message.error('移除失败: ' + (error.response?.data?.message || error.message));
     } finally {
       setRemoveModalVisible(false);
       setPostToRemove(null);

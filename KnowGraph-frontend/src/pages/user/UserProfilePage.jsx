@@ -12,7 +12,6 @@ import {
   Col,
   Tag,
   Empty,
-  message,
   Modal,
   Form,
   Input,
@@ -32,6 +31,7 @@ import {
   UserAddOutlined,
   UserDeleteOutlined
 } from '@ant-design/icons';
+import Message from '../../components/Message';
 import { getPersonalProfile, getMyProfile, toggleFollow, isFollowing, getFollowingList, getFollowerList } from '../../api/personal';
 import { getUserCollections, createCollection, deleteCollection, getPostsInCollection } from '../../api/collection';
 import { getPostsByUserId } from '../../api/post';
@@ -108,7 +108,7 @@ const UserProfilePage = () => {
         }
       } catch (error) {
         console.error('获取用户资料失败:', error);
-        message.error('获取用户资料失败');
+        Message.error('获取用户资料失败');
       } finally {
         setLoading(false);
       }
@@ -170,10 +170,10 @@ const UserProfilePage = () => {
         ...prev,
         followerCount: isFollowingUser ? prev.followerCount - 1 : prev.followerCount + 1
       }));
-      message.success(isFollowingUser ? '取消关注成功' : '关注成功');
+      Message.success(isFollowingUser ? '取消关注成功' : '关注成功');
     } catch (error) {
       console.error('关注操作失败:', error);
-      message.error('操作失败');
+      Message.error('操作失败');
     } finally {
       setFollowLoading(false);
     }
@@ -183,13 +183,13 @@ const UserProfilePage = () => {
   const handleCreateCollection = async (values) => {
     try {
       await createCollection(values);
-      message.success('创建收藏夹成功');
+      Message.success('创建收藏夹成功');
       setCreateCollectionVisible(false);
       form.resetFields();
       fetchCollections();
     } catch (error) {
       console.error('创建收藏夹失败:', error);
-      message.error('创建收藏夹失败');
+      Message.error('创建收藏夹失败');
     }
   };
 
@@ -201,11 +201,11 @@ const UserProfilePage = () => {
       onOk: async () => {
         try {
           await deleteCollection(collectionId);
-          message.success('删除成功');
+          Message.success('删除成功');
           fetchCollections();
         } catch (error) {
           console.error('删除收藏夹失败:', error);
-          message.error('删除失败');
+          Message.error('删除失败');
         }
       }
     });

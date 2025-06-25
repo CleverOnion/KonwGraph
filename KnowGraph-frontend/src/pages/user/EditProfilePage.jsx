@@ -7,11 +7,11 @@ import {
   Button,
   Avatar,
   Upload,
-  message,
   Space,
   Divider,
   Typography
 } from 'antd';
+import Message from '../../components/Message';
 import {
   UserOutlined,
   UploadOutlined,
@@ -52,7 +52,7 @@ const EditProfilePage = () => {
         });
       } catch (error) {
         console.error('获取用户信息失败:', error);
-        message.error('获取用户信息失败');
+        Message.error('获取用户信息失败');
       } finally {
         setLoading(false);
       }
@@ -74,9 +74,9 @@ const EditProfilePage = () => {
         setAvatarUrl(reader.result);
       });
       reader.readAsDataURL(info.file.originFileObj);
-      message.success('头像上传成功');
+      Message.success('头像上传成功');
     } else if (info.file.status === 'error') {
-      message.error('头像上传失败');
+      Message.error('头像上传失败');
     }
   };
 
@@ -84,12 +84,12 @@ const EditProfilePage = () => {
   const beforeUpload = (file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-      message.error('只能上传 JPG/PNG 格式的图片!');
+      Message.error('只能上传 JPG/PNG 格式的图片!');
       return false;
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      message.error('图片大小不能超过 2MB!');
+      Message.error('图片大小不能超过 2MB!');
       return false;
     }
     return true;
@@ -98,7 +98,7 @@ const EditProfilePage = () => {
   // 提交表单
   const handleSubmit = async (values) => {
     if (!currentUser) {
-      message.error('用户信息未加载，请刷新页面重试');
+      Message.error('用户信息未加载，请刷新页面重试');
       return;
     }
     
@@ -113,13 +113,13 @@ const EditProfilePage = () => {
       };
 
       await updateMyProfile(updateData);
-      message.success('个人资料更新成功');
+      Message.success('个人资料更新成功');
       
       // 返回个人空间页面
       navigate(`/users/${currentUser.id}`);
     } catch (error) {
       console.error('更新个人资料失败:', error);
-      message.error(error.response?.data?.message || '更新个人资料失败');
+      Message.error(error.response?.data?.message || '更新个人资料失败');
     } finally {
       setSubmitLoading(false);
     }
