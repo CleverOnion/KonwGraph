@@ -7,6 +7,7 @@ import com.cleveronion.knowgraph.common.core.domain.PageQueryDTO;
 import com.cleveronion.knowgraph.common.core.domain.PageResultVO;
 import com.cleveronion.knowgraph.user.domain.dto.UserLoginDTO;
 import com.cleveronion.knowgraph.user.domain.dto.UserRegisterDTO;
+import com.cleveronion.knowgraph.user.domain.dto.UserUpdateDTO;
 import com.cleveronion.knowgraph.user.domain.entity.User;
 import com.cleveronion.knowgraph.user.domain.enums.UserRole;
 import com.cleveronion.knowgraph.user.domain.enums.UserStatus;
@@ -109,4 +110,36 @@ public class UserServiceImpl implements UserService {
         List<User> records = userMapper.selectListByPage(pageQuery);
         return new PageResultVO<>(total, records);
     }
-} 
+
+    @Override
+    @Transactional
+    public void updateProfile(Long userId, UserUpdateDTO updateDTO) {
+        // 1. 检查用户是否存在
+        User existingUser = userMapper.selectById(userId);
+        if (existingUser == null) {
+            throw new ServiceException("用户不存在");
+        }
+
+        // 2. 检查邮箱是否被其他用户使用
+        if (updateDTO.getEmail() != null && !updateDTO.getEmail().equals(existingUser.getEmail())) {
+            User userWithEmail = userMapper.selectByEmail(updateDTO.getEmail());
+            if (userWithEmail != null && !userWithEmail.getId().equals(userId)) {
+                throw new ServiceException("该邮箱已被其他用户使用");
+            }
+        }
+
+        // 3. 构建更新对象
+        User updateUser = new User();
+        updateUser.setId(userId);
+        updateUser.setNickname(updateDTO.getNickname());
+        updateUser.setAvatarUrl(updateDTO.getAvatarUrl());
+        updateUser.setBio(updateDTO.getBio());
+        updateUser.setEmail(updateDTO.getEmail());
+
+        // 4. 执行更新
+        int result = userMapper.updateProfile(updateUser);
+        if (result == 0) {
+            throw new ServiceException("更新用户资料失败");
+        }
+    }
+}

@@ -2,6 +2,7 @@ package com.cleveronion.knowgraph.user.service;
 
 import com.cleveronion.knowgraph.user.domain.dto.UserLoginDTO;
 import com.cleveronion.knowgraph.user.domain.dto.UserRegisterDTO;
+import com.cleveronion.knowgraph.user.domain.dto.UserUpdateDTO;
 import com.cleveronion.knowgraph.user.domain.entity.User;
 import com.cleveronion.knowgraph.user.domain.vo.LoginSuccessVO;
 import com.cleveronion.knowgraph.user.domain.vo.UserProfileVO;
@@ -46,4 +47,11 @@ public interface UserService {
      * @return 用户分页结果
      */
     PageResultVO<User> listUsersByPage(PageQueryDTO pageQuery);
+
+    /**
+     * 更新用户资料
+     * @param userId 用户ID
+     * @param updateDTO 更新信息
+     */
+    void updateProfile(Long userId, UserUpdateDTO updateDTO);
 }

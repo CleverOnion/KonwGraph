@@ -87,4 +87,24 @@
         SELECT count(*) FROM users
     </select>
 
-</mapper> 
+    <update id="updateProfile" parameterType="com.cleveronion.knowgraph.user.domain.entity.User">
+        UPDATE users
+        <set>
+            <if test="nickname != null and nickname != ''">
+                nickname = #{nickname},
+            </if>
+            <if test="avatarUrl != null">
+                avatar_url = #{avatarUrl},
+            </if>
+            <if test="bio != null">
+                bio = #{bio},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            updated_at = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

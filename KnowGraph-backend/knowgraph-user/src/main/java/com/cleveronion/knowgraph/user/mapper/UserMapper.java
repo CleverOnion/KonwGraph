@@ -48,4 +48,11 @@ public interface UserMapper {
     List<User> selectListByPage(PageQueryDTO pageQuery);
 
     Long countTotal();
-} 
+
+    /**
+     * 更新用户资料
+     * @param user 用户实体
+     * @return 影响行数
+     */
+    int updateProfile(User user);
+}

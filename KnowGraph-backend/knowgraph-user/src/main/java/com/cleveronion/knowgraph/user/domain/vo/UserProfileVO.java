@@ -37,4 +37,6 @@ public class UserProfileVO {
      * 积分
      */
     private Integer points;
+
+    private String email;
 } 

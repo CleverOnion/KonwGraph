@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Card,
@@ -353,7 +353,7 @@ const UserProfilePage = () => {
                   </Button>
                 )}
                 {isOwnProfile && (
-                  <Button icon={<EditOutlined />} onClick={() => navigate('/settings/profile')}>
+                  <Button icon={<EditOutlined />} onClick={() => navigate(`/users/${currentUser.id}/edit`)}>
                     编辑资料
                   </Button>
                 )}

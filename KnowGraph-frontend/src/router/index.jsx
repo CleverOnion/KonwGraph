@@ -14,6 +14,7 @@ import SearchResultPage from "../pages/user/SearchResultPage";
 import UserProfilePage from "../pages/user/UserProfilePage";
 import CollectionDetailPage from "../pages/user/CollectionDetailPage";
 import SettingsPage from "../pages/user/SettingsPage";
+import EditProfilePage from "../pages/user/EditProfilePage";
 import NotificationsPage from "../pages/user/NotificationsPage";
 import CategoryDetailPage from "../pages/user/CategoryDetailPage";
 import TagDetailPage from "../pages/user/TagDetailPage";
@@ -66,12 +67,20 @@ const routes = [
         element: <UserProfilePage />,
       },
       {
+        path: "users/:userId/edit",
+        element: <EditProfilePage />,
+      },
+      {
         path: "collections/:collectionId",
         element: <CollectionDetailPage />,
       },
       {
         path: "settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "settings/profile",
+        element: <EditProfilePage />,
       },
       {
         path: "notifications",

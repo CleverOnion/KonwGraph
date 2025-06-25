@@ -47,3 +47,12 @@ export const getFollowerList = (userId) => {
     method: 'get',
   });
 };
+
+// 更新当前用户资料
+export const updateMyProfile = (data) => {
+  return request({
+    url: '/users/me',
+    method: 'put',
+    data,
+  });
+};
