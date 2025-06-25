@@ -112,19 +112,7 @@ const TopNavbar = ({ className = 'reddit-header' }) => {
         <img src={logo} alt="logo" className={`${className}-logo`} />
         <span className={`${className}-title`}>KnowGraph</span>
       </div>
-      <div className={`${className}-center`}>
-        <input
-          className={`${className}-search`}
-          placeholder="Search KnowGraph"
-        />
-      </div>
       <div className={`${className}-right`}>
-        <button className={`${className}-btn`}>+</button>
-        <button className={`${className}-btn`}>
-          <span role="img" aria-label="msg">
-            💬
-          </span>
-        </button>
         
         {/* 用户头像和下拉菜单 */}
         <div className="user-avatar-container" style={{ position: 'relative', display: 'inline-block' }}>
