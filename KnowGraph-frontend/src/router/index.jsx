@@ -28,6 +28,7 @@ import AdminUserPage from "../pages/admin/AdminUserPage";
 import AdminCategoryPage from "../pages/admin/AdminCategoryPage";
 import AdminReportPage from "../pages/admin/AdminReportPage";
 import AdminSettingsPage from "../pages/admin/AdminSettingsPage";
+import AdminReviewPage from "../pages/admin/AdminReviewPage";
 
 const routes = [
   {
@@ -108,6 +109,10 @@ const routes = [
       {
         path: "content",
         element: <AdminContentPage />,
+      },
+      {
+        path: "review",
+        element: <AdminReviewPage />,
       },
       {
         path: "users",

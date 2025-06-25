@@ -58,6 +58,16 @@ public class AdminPostVO {
     private String summary;
 
     /**
+     * Markdown原文
+     */
+    private String contentMd;
+
+    /**
+     * 由Markdown渲染后的HTML内容
+     */
+    private String contentHtml;
+
+    /**
      * 文章状态
      */
     private PostStatus status;

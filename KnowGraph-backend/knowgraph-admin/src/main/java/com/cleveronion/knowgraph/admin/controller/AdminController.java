@@ -67,6 +67,15 @@ public class AdminController {
     }
 
     /**
+     * 获取文章审核详情
+     */
+    @GetMapping("/posts/{postId}/review")
+    public R<AdminPostVO> getPostReviewDetail(@PathVariable Long postId) {
+        AdminPostVO postDetail = adminService.getPostDetail(postId);
+        return R.ok(postDetail);
+    }
+
+    /**
      * 审核文章
      */
     @PostMapping("/posts/review")

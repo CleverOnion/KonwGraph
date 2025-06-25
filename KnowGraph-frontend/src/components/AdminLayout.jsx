@@ -10,6 +10,7 @@ const AdminLayout = () => {
 
   const menuItems = [
     { key: '/admin', label: '仪表盘', icon: '📊' },
+    { key: '/admin/review', label: '内容审核', icon: '🔍' },
     { key: '/admin/users', label: '用户管理', icon: '👥' },
     { key: '/admin/categories', label: '分类管理', icon: '📂' }
   ];

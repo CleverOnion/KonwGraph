@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import ReviewStats from '../../components/ReviewStats';
 
 const DashboardPage = () => {
   const statsData = [
@@ -11,6 +12,9 @@ const DashboardPage = () => {
   return (
     <div>
       <h1 style={{ marginBottom: '24px', color: '#262626' }}>仪表盘</h1>
+      
+      {/* 审核统计 */}
+      <ReviewStats />
       
       {/* 统计卡片 */}
       <div style={{
