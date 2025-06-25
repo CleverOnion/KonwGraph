@@ -1,7 +1,7 @@
 package com.cleveronion.knowgraph.social.service.impl;
 
 import com.cleveronion.knowgraph.common.exception.ServiceException;
-import com.cleveronion.knowgraph.content.mapper.PostMapper;
+import com.cleveronion.knowgraph.content.service.PostService;
 import com.cleveronion.knowgraph.social.domain.dto.CommentCreateDTO;
 import com.cleveronion.knowgraph.social.domain.entity.Comment;
 import com.cleveronion.knowgraph.social.domain.enums.CommentStatus;
@@ -9,7 +9,7 @@ import com.cleveronion.knowgraph.social.domain.vo.CommentVO;
 import com.cleveronion.knowgraph.social.mapper.CommentMapper;
 import com.cleveronion.knowgraph.social.service.CommentService;
 import com.cleveronion.knowgraph.user.domain.entity.User;
-import com.cleveronion.knowgraph.user.mapper.UserMapper;
+import com.cleveronion.knowgraph.user.service.UserService;
 import com.cleveronion.knowgraph.user.domain.vo.UserProfileVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentMapper commentMapper;
-    private final PostMapper postMapper;
-    private final UserMapper userMapper;
+    private final PostService postService;
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -45,10 +45,10 @@ public class CommentServiceImpl implements CommentService {
         commentMapper.insert(comment);
 
         // 2. 更新文章评论数
-        postMapper.incrementCommentCount(postId);
+        postService.incrementCommentCount(postId);
 
         // 3. 查询作者信息并组装成VO返回
-        User author = userMapper.selectById(userId);
+        User author = userService.getUserById(userId);
         return mapToCommentVO(comment, author);
     }
 
@@ -62,7 +62,7 @@ public class CommentServiceImpl implements CommentService {
 
         // 2. 批量获取所有评论的作者信息
         List<Long> userIds = allComments.stream().map(Comment::getUserId).distinct().collect(Collectors.toList());
-        Map<Long, User> userMap = userMapper.selectByIds(userIds).stream()
+        Map<Long, User> userMap = userService.listByIds(userIds).stream()
                 .collect(Collectors.toMap(User::getId, u -> u));
 
         // 3. 将所有评论转换为VO，并用ID建立Map方便查找

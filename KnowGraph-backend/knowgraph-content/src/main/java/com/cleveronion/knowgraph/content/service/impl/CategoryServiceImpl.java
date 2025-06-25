@@ -121,6 +121,14 @@ public class CategoryServiceImpl implements CategoryService {
         return defaultCategory;
     }
 
+    @Override
+    public Category getCategoryEntityById(Integer id) {
+        if (id == null) {
+            throw new ServiceException("分类ID不能为空");
+        }
+        return categoryMapper.selectById(id);
+    }
+
     private CategoryVO toVO(Category category) {
         if (category == null) return null;
         CategoryVO vo = new CategoryVO();

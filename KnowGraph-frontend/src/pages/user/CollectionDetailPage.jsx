@@ -16,6 +16,8 @@ import {
   Spin
 } from 'antd';
 import Message from '../../components/Message';
+import TopNavbar from '../../components/TopNavbar';
+import Sidebar from '../../components/Sidebar';
 import {
   ArrowLeftOutlined,
   EyeOutlined,

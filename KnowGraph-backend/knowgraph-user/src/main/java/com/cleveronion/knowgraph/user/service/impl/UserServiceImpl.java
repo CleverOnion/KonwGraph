@@ -184,4 +184,9 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("更新用户角色失败");
         }
     }
+
+    @Override
+    public User getUserById(Long userId) {
+        return userMapper.selectById(userId);
+    }
 }

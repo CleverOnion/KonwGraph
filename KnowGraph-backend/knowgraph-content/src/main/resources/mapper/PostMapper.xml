@@ -126,4 +126,45 @@
         WHERE category_id = #{categoryId} AND deleted_at IS NULL
     </select>
 
+    <update id="updateById" parameterType="com.cleveronion.knowgraph.content.domain.entity.Post">
+        UPDATE posts 
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="contentMd != null">content_md = #{contentMd},</if>
+            <if test="contentHtml != null">content_html = #{contentHtml},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isFeatured != null">is_featured = #{isFeatured},</if>
+            <if test="publishedAt != null">published_at = #{publishedAt},</if>
+            <if test="viewCount != null">view_count = #{viewCount},</if>
+            <if test="likeCount != null">like_count = #{likeCount},</if>
+            <if test="commentCount != null">comment_count = #{commentCount},</if>
+            <if test="collectCount != null">collect_count = #{collectCount},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+            <if test="deletedAt != null">deleted_at = #{deletedAt}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="countByStatus" resultType="long">
+        SELECT COUNT(*) 
+        FROM posts 
+        WHERE deleted_at IS NULL
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+    </select>
+
+    <select id="selectByStatusWithPagination" resultMap="PostResult">
+        <include refid="selectPostVo"/>
+        WHERE deleted_at IS NULL
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
 </mapper>

@@ -1,8 +1,12 @@
 package com.cleveronion.knowgraph.content.service;
 
+import com.cleveronion.knowgraph.common.core.domain.PageQueryDTO;
+import com.cleveronion.knowgraph.common.core.domain.PageResultVO;
 import com.cleveronion.knowgraph.content.domain.dto.PostCreateDTO;
 import com.cleveronion.knowgraph.content.domain.dto.PostQueryDTO;
 import com.cleveronion.knowgraph.content.domain.dto.PostUpdateDTO;
+import com.cleveronion.knowgraph.content.domain.entity.Post;
+import com.cleveronion.knowgraph.content.domain.enums.PostStatus;
 import com.cleveronion.knowgraph.content.domain.vo.PostDetailVO;
 import com.cleveronion.knowgraph.content.domain.vo.PostSimpleVO;
 
@@ -59,4 +63,32 @@ public interface PostService {
      * @param postId 文章ID
      */
     void incrementViewCount(Long postId);
+
+    /**
+     * 增加文章评论数
+     * @param postId 文章ID
+     */
+    void incrementCommentCount(Long postId);
+
+    /**
+     * 根据ID获取文章实体
+     * @param postId 文章ID
+     * @return 文章实体
+     */
+    Post getPostById(Long postId);
+
+    /**
+     * 更新文章状态
+     * @param postId 文章ID
+     * @param status 新状态
+     */
+    void updatePostStatus(Long postId, PostStatus status);
+
+    /**
+     * 分页获取文章列表（管理员用，支持按状态筛选）
+     * @param pageQuery 分页查询参数
+     * @param status 文章状态（可选）
+     * @return 文章分页结果
+     */
+    PageResultVO<Post> listPostsByStatusForAdmin(PageQueryDTO pageQuery, PostStatus status);
 }

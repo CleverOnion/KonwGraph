@@ -1,6 +1,7 @@
 package com.cleveronion.knowgraph.content.mapper;
 
 import com.cleveronion.knowgraph.content.domain.entity.Post;
+import com.cleveronion.knowgraph.content.domain.enums.PostStatus;
 import org.apache.ibatis.annotations.Mapper;
 import com.cleveronion.knowgraph.content.domain.dto.PostQueryDTO;
 import org.apache.ibatis.annotations.Param;
@@ -94,4 +95,29 @@ public interface PostMapper {
      * @return 文章数量
      */
     int countByCategoryId(@Param("categoryId") Integer categoryId);
+
+    /**
+     * 根据ID更新文章
+     * @param post 文章实体
+     * @return 影响行数
+     */
+    int updateById(Post post);
+
+    /**
+     * 根据状态统计文章数量
+     * @param status 文章状态（可选）
+     * @return 文章数量
+     */
+    Long countByStatus(@Param("status") PostStatus status);
+
+    /**
+     * 根据状态分页查询文章
+     * @param status 文章状态（可选）
+     * @param offset 偏移量
+     * @param limit 限制数量
+     * @return 文章列表
+     */
+    List<Post> selectByStatusWithPagination(@Param("status") PostStatus status, 
+                                           @Param("offset") int offset, 
+                                           @Param("limit") int limit);
 }

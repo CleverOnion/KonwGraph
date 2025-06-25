@@ -70,4 +70,11 @@ public interface UserService {
      * @param role 新角色
      */
     void updateUserRole(Long userId, UserRole role);
+
+    /**
+     * 根据ID获取用户
+     * @param userId 用户ID
+     * @return 用户实体
+     */
+    User getUserById(Long userId);
 }

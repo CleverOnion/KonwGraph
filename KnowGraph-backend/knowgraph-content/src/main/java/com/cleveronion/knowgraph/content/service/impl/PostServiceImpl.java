@@ -1,5 +1,7 @@
 package com.cleveronion.knowgraph.content.service.impl;
 
+import com.cleveronion.knowgraph.common.core.domain.PageQueryDTO;
+import com.cleveronion.knowgraph.common.core.domain.PageResultVO;
 import com.cleveronion.knowgraph.common.exception.ServiceException;
 import com.cleveronion.knowgraph.content.domain.dto.PostCreateDTO;
 import com.cleveronion.knowgraph.content.domain.dto.PostQueryDTO;
@@ -65,7 +67,7 @@ public class PostServiceImpl implements PostService {
         post.setSummary(createDTO.getSummary());
         post.setContentMd(createDTO.getContentMd());
         post.setContentHtml(contentHtml);
-        post.setStatus(PostStatus.PUBLISHED); // 默认为直接发布
+        post.setStatus(PostStatus.PENDING_REVIEW); // 默认为待审核
         post.setIsFeatured(false);
         post.setPublishedAt(LocalDateTime.now());
 
@@ -298,5 +300,48 @@ public class PostServiceImpl implements PostService {
     @Override
     public void incrementViewCount(Long postId) {
         postMapper.incrementViewCount(postId);
+    }
+
+    @Override
+    public void incrementCommentCount(Long postId) {
+        postMapper.incrementCommentCount(postId);
+    }
+
+    @Override
+    public Post getPostById(Long postId) {
+        return postMapper.selectById(postId);
+    }
+
+    @Override
+    @Transactional
+    public void updatePostStatus(Long postId, PostStatus status) {
+        Post post = postMapper.selectById(postId);
+        if (post == null) {
+            throw new ServiceException("文章不存在");
+        }
+        
+        post.setStatus(status);
+        post.setUpdatedAt(LocalDateTime.now());
+        
+        // 如果是审核通过，设置发布时间
+        if (PostStatus.PUBLISHED.equals(status) && post.getPublishedAt() == null) {
+            post.setPublishedAt(LocalDateTime.now());
+        }
+        
+        postMapper.updateById(post);
+    }
+
+    @Override
+    public PageResultVO<Post> listPostsByStatusForAdmin(PageQueryDTO pageQuery, PostStatus status) {
+        // 计算偏移量
+        int offset = (pageQuery.getPageNum() - 1) * pageQuery.getPageSize();
+        
+        // 查询总数
+        Long total = postMapper.countByStatus(status);
+        
+        // 查询分页数据
+        List<Post> posts = postMapper.selectByStatusWithPagination(status, offset, pageQuery.getPageSize());
+        
+        return new PageResultVO<>(total, posts);
     }
 }
