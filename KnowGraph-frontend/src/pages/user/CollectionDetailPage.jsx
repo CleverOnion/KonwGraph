@@ -21,8 +21,6 @@ import {
   HeartOutlined,
   MessageOutlined,
   DeleteOutlined,
-  ShareAltOutlined,
-  EditOutlined,
   SearchOutlined,
   BellOutlined,
   UserOutlined,
@@ -174,15 +172,7 @@ const CollectionDetailPage = () => {
     setPostToRemove(null);
   };
 
-  // 分享收藏夹
-  const handleShare = () => {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-      message.success('链接已复制到剪贴板');
-    }).catch(() => {
-      message.error('复制失败');
-    });
-  };
+
 
   if (loading) {
     return (
@@ -428,16 +418,7 @@ const CollectionDetailPage = () => {
               </div>
             </Space>
           </div>
-          <Space>
-            <Tooltip title="分享收藏夹">
-              <Button icon={<ShareAltOutlined />} onClick={handleShare} />
-            </Tooltip>
-            {isOwner && (
-              <Tooltip title="编辑收藏夹">
-                <Button icon={<EditOutlined />} onClick={() => navigate(`/collections/${collectionId}/edit`)} />
-              </Tooltip>
-            )}
-          </Space>
+
         </div>
       </Card>
 
