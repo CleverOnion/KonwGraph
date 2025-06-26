@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Statistic, Row, Col, Spin, message } from 'antd';
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, FileTextOutlined } from '@ant-design/icons';
-import { getReviewStats } from '../api/review';
+import { getAnalyticsReviewStats } from '../api/analytics';
 
 const ReviewStats = () => {
   const [stats, setStats] = useState({
@@ -15,7 +15,7 @@ const ReviewStats = () => {
   // 获取审核统计数据
   const fetchStats = async () => {
     try {
-      const response = await getReviewStats();
+      const response = await getAnalyticsReviewStats();
       setStats(response.data || {
         pendingCount: 0,
         approvedCount: 0,
@@ -23,6 +23,7 @@ const ReviewStats = () => {
         totalCount: 0
       });
     } catch (error) {
+      console.error('获取审核统计数据失败:', error);
       // 如果接口不存在，使用模拟数据
       setStats({
         pendingCount: 12,

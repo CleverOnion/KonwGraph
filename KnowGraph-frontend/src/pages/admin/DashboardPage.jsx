@@ -1,13 +1,46 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ReviewStats from '../../components/ReviewStats';
+import { getDashboardStats } from '../../api/analytics';
 
 const DashboardPage = () => {
-  const statsData = [
-    { title: '总用户数', value: '1,234', icon: '👥', color: '#1890ff' },
-    { title: '总文章数', value: '5,678', icon: '📝', color: '#52c41a' },
-    { title: '今日访问', value: '890', icon: '👁️', color: '#fa8c16' },
-    { title: '待审核', value: '12', icon: '⏳', color: '#f5222d' }
-  ];
+  const navigate = useNavigate();
+  const [statsData, setStatsData] = useState([
+    { title: '总用户数', value: '0', icon: '👥', color: '#1890ff' },
+    { title: '总文章数', value: '0', icon: '📝', color: '#52c41a' },
+    { title: '待审核', value: '0', icon: '⏳', color: '#f5222d' }
+  ]);
+  const [loading, setLoading] = useState(true);
+
+  // 获取仪表盘统计数据
+  const fetchDashboardStats = async () => {
+    try {
+      const response = await getDashboardStats();
+      const data = response.data;
+      
+      setStatsData([
+        { title: '总用户数', value: data.totalUsers?.toLocaleString() || '0', icon: '👥', color: '#1890ff' },
+        { title: '总文章数', value: data.totalPosts?.toLocaleString() || '0', icon: '📝', color: '#52c41a' },
+        { title: '待审核', value: data.pendingPosts?.toLocaleString() || '0', icon: '⏳', color: '#f5222d' }
+      ]);
+    } catch (error) {
+      console.error('获取仪表盘统计数据失败:', error);
+      // 显示错误信息并使用默认数据
+      alert('获取统计数据失败，请检查后端服务是否正常运行。错误信息: ' + (error.message || error));
+      setStatsData([
+        { title: '总用户数', value: '接口异常', icon: '👥', color: '#1890ff' },
+        { title: '总文章数', value: '接口异常', icon: '📝', color: '#52c41a' },
+        { title: '待审核', value: '接口异常', icon: '⏳', color: '#f5222d' }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
 
   return (
     <div>
@@ -21,7 +54,9 @@ const DashboardPage = () => {
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
         gap: '20px',
-        marginBottom: '32px'
+        marginBottom: '32px',
+        opacity: loading ? 0.6 : 1,
+        transition: 'opacity 0.3s'
       }}>
         {statsData.map((stat, index) => (
           <div key={index} style={{
@@ -80,38 +115,33 @@ const DashboardPage = () => {
           gap: '12px',
           flexWrap: 'wrap'
         }}>
-          <button style={{
-            padding: '8px 16px',
-            backgroundColor: '#1890ff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '14px'
-          }}>
-            审核文章
+          <button 
+            onClick={() => navigate('/admin/review')}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#1890ff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            内容审核
           </button>
-          <button style={{
-            padding: '8px 16px',
-            backgroundColor: '#52c41a',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '14px'
-          }}>
-            用户管理
-          </button>
-          <button style={{
-            padding: '8px 16px',
-            backgroundColor: '#fa8c16',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '14px'
-          }}>
-            系统设置
+          <button 
+            onClick={() => navigate('/admin/categories')}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#52c41a',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            分类管理
           </button>
         </div>
       </div>
